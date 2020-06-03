@@ -1,4 +1,6 @@
 /build
-.gradle
+core/.gradle
+core/build
 .idea
-/gradle
+/buildSrc/build
+.gradle
