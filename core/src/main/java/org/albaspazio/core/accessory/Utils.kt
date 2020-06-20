@@ -20,14 +20,11 @@ fun showToast(text:String, ctx:Context, duration:Int=Toast.LENGTH_SHORT, gravity
     t.show()
 }
 
-// by default I do not notify DM, I notify DM when explicitely requested or in case file do not exist)
+// by default I do not notify DM, I notify DM when explicitly requested or in case file do not exist)
 fun saveText(ctx:Context, filename: String, text: String, dir:String=Environment.DIRECTORY_DOWNLOADS, overwrite:Boolean=true, notifyDm:Boolean=false){
 
     if (!isExternalStorageWritable()){
-        showToast(
-            "Cannot write on External Storage",
-            ctx
-        )
+        showToast("Cannot write on External Storage", ctx)
         return
     }
     try {
@@ -36,12 +33,7 @@ fun saveText(ctx:Context, filename: String, text: String, dir:String=Environment
 
         val exist   = file.exists()
 
-        if(exist) {
-            if (overwrite) deleteFile(
-                filename,
-                dir
-            )
-        }
+        if(exist && overwrite) deleteFile(filename, dir)
 
         val bytes   = text.toByteArray(charset("UTF-8"))
         val stream  = FileOutputStream(file, true)

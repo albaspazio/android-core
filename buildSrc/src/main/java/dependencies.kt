@@ -2,7 +2,7 @@ object Configs {
 
     const val applicationId     = "iit.uvip.psysuite"
     const val compileSdkVersion = 28
-    const val minSdkVersion     = 24
+    const val minSdkVersion     = 23
     const val targetSdkVersion  = 26
     const val versionCode       = 1
     const val versionName       = "1.0.0"
@@ -28,7 +28,8 @@ object Dependencies {
     }
 
     object Kotlin {
-        const val stdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+        const val stdLib    = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+        const val reflect   = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
 
     }
 

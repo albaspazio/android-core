@@ -41,6 +41,7 @@ dependencies {
     api(Dependencies.AndroidX.navFragment)
     api(Dependencies.AndroidX.navUi)
     api(Dependencies.Kotlin.stdLib)
+    api(Dependencies.Kotlin.reflect)
 
     api("androidx.appcompat:appcompat:1.3.0-alpha01")
     api("androidx.constraintlayout:constraintlayout:1.1.3")
