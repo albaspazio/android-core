@@ -51,6 +51,9 @@ dependencies {
     api("com.jakewharton.rxrelay2:rxrelay:2.1.1")
     api("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
+    api("com.sun.mail:android-mail:1.6.0")
+    api("com.sun.mail:android-activation:1.6.0")
+
     testImplementation("junit:junit:4.13")
     androidTestImplementation("androidx.test:runner:1.2.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
