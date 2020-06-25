@@ -67,12 +67,9 @@ fun readText(filename: String, dir:String= Environment.DIRECTORY_DOWNLOADS):Stri
 
 fun getFileList(dir:String= Environment.DIRECTORY_DOWNLOADS, allowedext:List<String>):List<File>{
 
-    val path: String    = Environment.getExternalStorageDirectory().absolutePath
-    val spath           = "Download"
-    val fullpath        = File(path + File.separator + spath)
-
-//    val path:File           = Environment.getExternalStoragePublicDirectory(dir)
-    val listAllFiles        = fullpath.listFiles()
+    val path: String    = Environment.getExternalStoragePublicDirectory(dir).absolutePath
+    val fullpath        = File(path)
+    val listAllFiles    = fullpath.listFiles()
 
     val fileList:MutableList<File> = mutableListOf()
 
@@ -103,7 +100,7 @@ fun existFile(filename:String, dir:String = Environment.DIRECTORY_DOWNLOADS):Pai
 
 fun getAbsoluteFilePath(filename:String, dir:String = Environment.DIRECTORY_DOWNLOADS):Pair<Boolean, String>{
 
-    val path:File = Environment.getExternalStoragePublicDirectory(dir)
+    val path:File   = Environment.getExternalStoragePublicDirectory(dir)
     val file        = File(path, filename)
 
     return when(file.exists()) {
