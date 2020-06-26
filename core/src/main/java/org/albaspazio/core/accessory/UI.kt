@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.view.Gravity
+import android.widget.RadioGroup
 import android.widget.Toast
 
 
@@ -60,4 +61,9 @@ fun show2MethodsDialog(activity: Activity, title:String, message:String, oklab:S
     val dialog: AlertDialog = builder.create()
     dialog.show()
     return dialog
+}
+
+
+fun RadioGroup.getSelectedID():Int{
+    return indexOfChild(findViewById(checkedRadioButtonId))
 }

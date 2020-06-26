@@ -3,7 +3,6 @@ package org.albaspazio.core.accessory
 import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
-import android.util.Log
 import java.io.*
 
 // by default I do not notify DM, I notify DM when explicitly requested or in case file do not exist)
@@ -74,12 +73,12 @@ fun getFileList(dir:String= Environment.DIRECTORY_DOWNLOADS, allowedext:List<Str
     val fileList:MutableList<File> = mutableListOf()
 
     if (listAllFiles != null && listAllFiles.isNotEmpty()) {
-        for (currentFile in listAllFiles) {
-            for (ext in allowedext) {
-                if (currentFile.name.endsWith(ext)) {
-                    Log.e("downloadFilePath", currentFile.absolutePath) // File absolute path
-                    Log.e("downloadFileName", currentFile.name)         // File Name
-                    fileList.add(currentFile)
+        listAllFiles.map{
+            for(ext in allowedext) {
+                if (it.name.endsWith(ext)) {
+//                    Log.e("downloadFilePath", it.absolutePath) // File absolute path
+//                    Log.e("downloadFileName", it.name)         // File Name
+                    fileList.add(it)
                 }
             }
         }
@@ -96,6 +95,16 @@ fun existFile(filename:String, dir:String = Environment.DIRECTORY_DOWNLOADS):Pai
         true    -> Pair(true, file)
         false   -> Pair(false, null)
     }
+}
+
+fun existFileStartingWith(startfilename:String, dir:String = Environment.DIRECTORY_DOWNLOADS, allowedext:List<String>):Boolean{
+
+    val existing = getFileList(dir, allowedext)
+    val startlen = startfilename.length
+    existing.map{
+        if(it.nameWithoutExtension.substring(0, startlen) == startfilename) return true
+    }
+    return false
 }
 
 fun getAbsoluteFilePath(filename:String, dir:String = Environment.DIRECTORY_DOWNLOADS):Pair<Boolean, String>{
