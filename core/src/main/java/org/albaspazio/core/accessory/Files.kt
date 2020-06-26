@@ -3,31 +3,13 @@ package org.albaspazio.core.accessory
 import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
-import android.util.Log
-import android.view.Gravity
-import android.widget.Toast
-
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-
-
 import java.io.*
-import java.util.*
 
-fun showToast(text:String, ctx:Context, duration:Int=Toast.LENGTH_SHORT, gravity:Int=Gravity.CENTER) {
-    val t = Toast.makeText(ctx, text, duration)
-    t.setGravity(gravity, 0, 0)
-    t.show()
-}
-
-// by default I do not notify DM, I notify DM when explicitely requested or in case file do not exist)
-fun saveText(ctx:Context, filename: String, text: String, dir:String=Environment.DIRECTORY_DOWNLOADS, overwrite:Boolean=true, notifyDm:Boolean=false){
+// by default I do not notify DM, I notify DM when explicitly requested or in case file do not exist)
+fun saveText(ctx: Context, filename: String, text: String, dir:String= Environment.DIRECTORY_DOWNLOADS, overwrite:Boolean=true, notifyDm:Boolean=false){
 
     if (!isExternalStorageWritable()){
-        showToast(
-            "Cannot write on External Storage",
-            ctx
-        )
+        showToast("Cannot write on External Storage", ctx)
         return
     }
     try {
@@ -36,12 +18,7 @@ fun saveText(ctx:Context, filename: String, text: String, dir:String=Environment
 
         val exist   = file.exists()
 
-        if(exist) {
-            if (overwrite) deleteFile(
-                filename,
-                dir
-            )
-        }
+        if(exist && overwrite) deleteFile(filename, dir)
 
         val bytes   = text.toByteArray(charset("UTF-8"))
         val stream  = FileOutputStream(file, true)
@@ -70,7 +47,7 @@ fun saveText(ctx:Context, filename: String, text: String, dir:String=Environment
     }
 }
 
-fun readText(filename: String, dir:String=Environment.DIRECTORY_DOWNLOADS):String{
+fun readText(filename: String, dir:String= Environment.DIRECTORY_DOWNLOADS):String{
 
     val path                = Environment.getExternalStoragePublicDirectory(dir)
     val file                = File(path,filename)
@@ -87,24 +64,21 @@ fun readText(filename: String, dir:String=Environment.DIRECTORY_DOWNLOADS):Strin
     return stringBuilder.toString()
 }
 
-fun getFileList(dir:String=Environment.DIRECTORY_DOWNLOADS, allowedext:List<String>):List<File>{
+fun getFileList(dir:String= Environment.DIRECTORY_DOWNLOADS, allowedext:List<String>):List<File>{
 
-    val path: String    = Environment.getExternalStorageDirectory().absolutePath
-    val spath           = "Download"
-    val fullpath        = File(path + File.separator + spath)
-
-//    val path:File           = Environment.getExternalStoragePublicDirectory(dir)
-    val listAllFiles        = fullpath.listFiles()
+    val path: String    = Environment.getExternalStoragePublicDirectory(dir).absolutePath
+    val fullpath        = File(path)
+    val listAllFiles    = fullpath.listFiles()
 
     val fileList:MutableList<File> = mutableListOf()
 
     if (listAllFiles != null && listAllFiles.isNotEmpty()) {
-        for (currentFile in listAllFiles) {
-            for (ext in allowedext) {
-                if (currentFile.name.endsWith(ext)) {
-                    Log.e("downloadFilePath", currentFile.absolutePath) // File absolute path
-                    Log.e("downloadFileName", currentFile.name)         // File Name
-                    fileList.add(currentFile)
+        listAllFiles.map{
+            for(ext in allowedext) {
+                if (it.name.endsWith(ext)) {
+//                    Log.e("downloadFilePath", it.absolutePath) // File absolute path
+//                    Log.e("downloadFileName", it.name)         // File Name
+                    fileList.add(it)
                 }
             }
         }
@@ -112,7 +86,7 @@ fun getFileList(dir:String=Environment.DIRECTORY_DOWNLOADS, allowedext:List<Stri
     return fileList
 }
 
-fun existFile(filename:String, dir:String=Environment.DIRECTORY_DOWNLOADS):Pair<Boolean, File?>{
+fun existFile(filename:String, dir:String = Environment.DIRECTORY_DOWNLOADS):Pair<Boolean, File?>{
 
     val path    = Environment.getExternalStoragePublicDirectory(dir)
     val file    = File(path, filename)
@@ -123,7 +97,28 @@ fun existFile(filename:String, dir:String=Environment.DIRECTORY_DOWNLOADS):Pair<
     }
 }
 
-fun deleteFile(filename:String, writedir:String=Environment.DIRECTORY_DOWNLOADS){
+fun existFileStartingWith(startfilename:String, dir:String = Environment.DIRECTORY_DOWNLOADS, allowedext:List<String>):Boolean{
+
+    val existing = getFileList(dir, allowedext)
+    val startlen = startfilename.length
+    existing.map{
+        if(it.nameWithoutExtension.substring(0, startlen) == startfilename) return true
+    }
+    return false
+}
+
+fun getAbsoluteFilePath(filename:String, dir:String = Environment.DIRECTORY_DOWNLOADS):Pair<Boolean, String>{
+
+    val path:File   = Environment.getExternalStoragePublicDirectory(dir)
+    val file        = File(path, filename)
+
+    return when(file.exists()) {
+        true    -> Pair(true, "${path.absolutePath}/$filename")
+        false   -> Pair(false, "")
+    }
+}
+
+fun deleteFile(filename:String, writedir:String= Environment.DIRECTORY_DOWNLOADS){
     val res     = existFile(filename, writedir)
     if (res.first)
         res.second!!.delete()
@@ -139,27 +134,3 @@ fun isExternalStorageReadable(): Boolean {
     val state = Environment.getExternalStorageState()
     return (Environment.MEDIA_MOUNTED == state || Environment.MEDIA_MOUNTED_READ_ONLY == state)
 }
-
-fun getTimeDifference(startdate:Date):Int{
-    val now:Long = Date().time
-    return (now - startdate.time).toInt()
-}
-
-fun getVersionName(c: Context): String? {
-    val info = getPackageInfo(c) ?: return "?.?.?"
-    return info.versionName
-}
-
-fun getPackageInfo(c: Context): PackageInfo? {
-    val manager: PackageManager = c.getPackageManager()
-    try {
-        return manager.getPackageInfo(c.getPackageName(), 0)
-    } catch (e: PackageManager.NameNotFoundException) {
-        Log.e("Utils", "Couldn't find package information in PackageManager: $e")
-    }
-    return null
-}
-
-//fun String.isInt(){
-//    if(this.isBlank())
-//}

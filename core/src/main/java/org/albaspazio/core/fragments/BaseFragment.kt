@@ -2,13 +2,11 @@ package org.albaspazio.core.fragments
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import org.albaspazio.core.accessory.iNavigated
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
 
 //--------------------------------------------------------------------------------------------------
 // abstract layer containing behaviour common to all fragments:

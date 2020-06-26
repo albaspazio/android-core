@@ -126,11 +126,8 @@ class SpeechManager(
         this.pause = pause
         textList.addAll(text)
         if (!isSpeaking) {
-            if (delay > 0) mSpeakHandler.postDelayed(
-                { doSpeak(queue_mode, params, utterance_id) },
-                delay
-            )
-            else doSpeak(queue_mode, params, utterance_id)
+            if (delay > 0)  mSpeakHandler.postDelayed({ doSpeak(queue_mode, params, utterance_id) }, delay)
+            else            doSpeak(queue_mode, params, utterance_id)
         }
     }
 
@@ -164,8 +161,7 @@ class SpeechManager(
         mSpeakHandler.removeCallbacksAndMessages(null)
         textList.clear()
         tts?.stop()
-        isSpeaking =
-            false  // i cannot wait that onStop set it to false, otherwise if I give a speak command immediately after this stop, it doesn't start
+        isSpeaking = false  // i cannot wait that onStop set it to false, otherwise if I give a speak command immediately after this stop, it doesn't start
     }
 
     fun shutdown() {

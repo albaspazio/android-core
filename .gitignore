@@ -1,6 +1,5 @@
 /build
-core/.gradle
-core/build
 .idea
 /buildSrc/build
+/buildSrc/.gradle
 .gradle

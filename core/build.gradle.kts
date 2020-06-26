@@ -41,6 +41,7 @@ dependencies {
     api(Dependencies.AndroidX.navFragment)
     api(Dependencies.AndroidX.navUi)
     api(Dependencies.Kotlin.stdLib)
+    api(Dependencies.Kotlin.reflect)
 
     api("androidx.appcompat:appcompat:1.3.0-alpha01")
     api("androidx.constraintlayout:constraintlayout:1.1.3")
@@ -49,6 +50,9 @@ dependencies {
     api("io.reactivex.rxjava2:rxandroid:2.1.1")
     api("com.jakewharton.rxrelay2:rxrelay:2.1.1")
     api("io.reactivex.rxjava2:rxkotlin:2.4.0")
+
+    api("com.sun.mail:android-mail:1.6.0")
+    api("com.sun.mail:android-activation:1.6.0")
 
     testImplementation("junit:junit:4.13")
     androidTestImplementation("androidx.test:runner:1.2.0")
