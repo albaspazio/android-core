@@ -102,7 +102,10 @@ fun existFileStartingWith(startfilename:String, dir:String = Environment.DIRECTO
     val existing = getFileList(dir, allowedext)
     val startlen = startfilename.length
     existing.map{
-        if(it.nameWithoutExtension.substring(0, startlen) == startfilename) return true
+
+        val filenoext = it.nameWithoutExtension
+        if(startlen < filenoext.length)
+            if(filenoext.substring(0, startlen) == startfilename) return true
     }
     return false
 }
