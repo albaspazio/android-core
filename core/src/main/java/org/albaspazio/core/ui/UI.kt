@@ -1,4 +1,4 @@
-package org.albaspazio.core.accessory
+package org.albaspazio.core.ui
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -62,7 +62,6 @@ fun show2MethodsDialog(activity: Activity, title:String, message:String, oklab:S
     dialog.show()
     return dialog
 }
-
 
 fun RadioGroup.getSelectedID():Int{
     return indexOfChild(findViewById(checkedRadioButtonId))

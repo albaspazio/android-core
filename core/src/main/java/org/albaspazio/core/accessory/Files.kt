@@ -3,6 +3,7 @@ package org.albaspazio.core.accessory
 import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
+import org.albaspazio.core.ui.showToast
 import java.io.*
 
 // by default I do not notify DM, I notify DM when explicitly requested or in case file do not exist)
