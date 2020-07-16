@@ -11,6 +11,7 @@ import android.util.Log
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.albaspazio.core.R
+import org.albaspazio.core.accessory.isOnline
 import org.albaspazio.core.ui.CustomProgressAlertDialog
 import org.albaspazio.core.ui.show2MethodsDialog
 import org.json.JSONObject
@@ -47,7 +48,8 @@ class UpdateManager(private var activity: Activity,
         Constants.VERSION_PARSE_FAIL    to activity.resources.getString(R.string.parse_error),
         Constants.REMOTE_FILE_NOT_FOUND to activity.resources.getString(R.string.remotefile_notfound_error),
         Constants.TIMEOUT_ERROR         to activity.resources.getString(R.string.timeout_error),
-        Constants.UNKNOWN_ERROR         to activity.resources.getString(R.string.unknown_error))
+        Constants.UNKNOWN_ERROR         to activity.resources.getString(R.string.unknown_error),
+        Constants.NETWORK_ABSENT         to activity.resources.getString(R.string.network_absent))
 
 
 
@@ -60,8 +62,9 @@ class UpdateManager(private var activity: Activity,
                 Constants.DOWNLOAD_CLICK_START  ->  downloadApk()
                 Constants.DOWNLOAD_FINISH       ->  isDownloading = false
 
-                Constants.VERSION_UP_TO_UPDATE  ->  onSuccess(Constants.VERSION_UP_TO_UPDATE)
-                Constants.UPDATE_CANCELLED      ->  onSuccess(Constants.UPDATE_CANCELLED)
+                Constants.VERSION_UP_TO_UPDATE,
+                Constants.UPDATE_CANCELLED,
+                Constants.NETWORK_ABSENT        ->  onSuccess(msg.what)
 
                 Constants.NETWORK_ERROR         ->  onError(errors.get(Constants.NETWORK_ERROR)!!)
                 Constants.CONNECTION_ERROR      ->  onError(errors.get(Constants.CONNECTION_ERROR)!!)
@@ -75,6 +78,12 @@ class UpdateManager(private var activity: Activity,
 
     // called by activity => VERSION_COMPARE_END => onCompareEnd :  upgrade or skip => downloadApk()
     fun checkUpdate() {
+
+        if(!isOnline(activity)){
+            mHandler.sendEmptyMessage(Constants.NETWORK_ABSENT)
+            return
+        }
+
         Log.d(TAG, "checkUpdate..")
         checkUpdateThread = CheckUpdateThread(activity, mHandler, packageName, updateXmlUrl, timeOutMs, options)
 

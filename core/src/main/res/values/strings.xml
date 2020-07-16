@@ -34,6 +34,8 @@
     <string name="download_complete_pos_btn">Scarica di nuovo</string>
     <string name="download_complete_neu_btn">Installa</string>
 
+    <string name="network_absent">Nessun accesso alla rete</string>
+
     <string name="network_error">Errore di Network</string>
     <string name="connection_error">Errore di connessione</string>
     <string name="remotefile_notfound_error">File remoto non trovata</string>

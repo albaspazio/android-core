@@ -22,6 +22,8 @@ interface Constants {
 
         const val NO_SUCH_METHOD = 501
 
+        const val NETWORK_ABSENT = 601
+
         const val UNKNOWN_ERROR = 901
     }
 }
