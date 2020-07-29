@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 
@@ -24,15 +25,18 @@ class VibrationManager(private val ctx: Context) {
         }
     }
 
-    fun vibrateSingle(
-        duration: Long,
-        ampl: Int = -1
-    ) {   // ampl -1 corresponds to VibrationEffect.DEFAULT_AMPLITUDE
+    fun vibrateSingle(duration: Long, ampl: Int = -1) {   // ampl -1 corresponds to VibrationEffect.DEFAULT_AMPLITUDE
+
+        val dur =   if(duration < 1)   {
+                        Log.w("VibrationManager", "vibrateSingle: duration($duration) was below 1, set to 100")
+                        100
+                    } else duration
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            vibrateSingle26(duration, ampl)
+            vibrateSingle26(dur, ampl)
         else
             @Suppress("DEPRECATION")
-            vibrator!!.vibrate(duration)
+            vibrator!!.vibrate(dur)
     }
 
     fun vibratePattern(timings: LongArray, amplitudes: IntArray, rep: Int = -1) {
@@ -56,7 +60,7 @@ class VibrationManager(private val ctx: Context) {
 
     // ===========================================================================================================
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private fun vibrateSingle26(duration: Long, ampl: Int = VibrationEffect.DEFAULT_AMPLITUDE) {
+    private fun vibrateSingle26(duration:Long, ampl:Int = VibrationEffect.DEFAULT_AMPLITUDE) {
         val effect = VibrationEffect.createOneShot(duration, ampl)
         vibrator!!.vibrate(effect)
     }
