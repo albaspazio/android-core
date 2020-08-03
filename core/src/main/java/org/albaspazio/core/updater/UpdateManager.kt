@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.albaspazio.core.R
 import org.albaspazio.core.accessory.isOnline
 import org.albaspazio.core.ui.CustomProgressAlertDialog
-import org.albaspazio.core.ui.show2MethodsDialog
+import org.albaspazio.core.ui.show2ChoisesDialog
 import org.json.JSONObject
 
 class UpdateManager(private var activity: Activity,
@@ -100,18 +100,18 @@ class UpdateManager(private var activity: Activity,
         if (ver.getInt("localcode") < ver.getInt("remotecode")) {
             Log.d(TAG, activity.resources.getString(R.string.update_title))
 
-            alertDialog = show2MethodsDialog(activity,
+            alertDialog = show2ChoisesDialog(activity,
                 activity.resources.getString(R.string.update_title),
                 activity.resources.getString(R.string.update_message, ver.getString("localver"),ver.getString("remotever") ),
                 activity.resources.getString(R.string.update_update_btn),
                 activity.resources.getString(R.string.no),
-                {   // cancel
-                    alertDialog.dismiss()
-                    mHandler.sendEmptyMessage(Constants.UPDATE_CANCELLED)
-                },
                 {   // ok
                     alertDialog.dismiss()
                     mHandler.sendEmptyMessage(Constants.DOWNLOAD_CLICK_START)
+                },                
+                {   // cancel
+                    alertDialog.dismiss()
+                    mHandler.sendEmptyMessage(Constants.UPDATE_CANCELLED)
                 })
         }
         else mHandler.sendEmptyMessage(Constants.VERSION_UP_TO_UPDATE)

@@ -8,11 +8,11 @@ import org.albaspazio.core.ui.showToast
 import java.io.*
 
 // by default I do not notify DM, I notify DM when explicitly requested or in case file do not exist)
-fun saveText(ctx: Context, filename: String, text: String, dir:String= Environment.DIRECTORY_DOWNLOADS, overwrite:Boolean=true, notifyDm:Boolean=false){
+fun saveText(ctx: Context, filename: String, text: String, dir:String= Environment.DIRECTORY_DOWNLOADS, overwrite:Boolean=true, notifyDm:Boolean=false):Boolean{
 
     if (!isExternalStorageWritable()){
         showToast("Cannot write on External Storage", ctx)
-        return
+        return false
     }
     try {
         val path    = Environment.getExternalStoragePublicDirectory(dir)
@@ -39,13 +39,12 @@ fun saveText(ctx: Context, filename: String, text: String, dir:String= Environme
                 true
             )
         }
+        return true
     }
-    catch (exc: Exception)
+    catch (e:Exception)
     {
-        showToast(
-            "Could not save data to file!",
-            ctx
-        )
+        showToast("Could not save data to file!\nerror: $e", ctx)
+        return false
     }
 }
 
@@ -111,6 +110,7 @@ fun existFileStartingWith(startfilename:String, dir:String = Environment.DIRECTO
     return false
 }
 
+
 fun getAbsoluteFilePath(filename:String, dir:String = Environment.DIRECTORY_DOWNLOADS):Pair<Boolean, String>{
 
     val path:File   = Environment.getExternalStoragePublicDirectory(dir)
@@ -167,4 +167,11 @@ fun isExternalStorageWritable(): Boolean {
 fun isExternalStorageReadable(): Boolean {
     val state = Environment.getExternalStorageState()
     return (Environment.MEDIA_MOUNTED == state || Environment.MEDIA_MOUNTED_READ_ONLY == state)
+}
+
+fun notifyFile(file:String, ctx:Context, dir:String = Environment.DIRECTORY_DOWNLOADS){
+    val path    = Environment.getExternalStoragePublicDirectory(dir)
+    val f       = File(path, file)
+    val down    = ctx.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+    down.addCompletedDownload(f.name, "User file", false, "text/plain", f.path, f.length(), true)
 }

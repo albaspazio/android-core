@@ -45,7 +45,7 @@ fun show1MethodDialog(activity: Activity, title:String, message:String, oklab:St
     return dialog
 }
 
-fun show2MethodsDialog(activity: Activity, title:String, message:String, oklab:String = "OK", canlab:String = "CANCEL", canclb:() -> Unit = {}, okclb:() -> Unit):AlertDialog{
+fun show2ChoisesDialog(activity: Activity, title:String, message:String, oklab:String = "OK", canlab:String = "CANCEL", okclb:() -> Unit, canclb:() -> Unit = {}):AlertDialog{
 
     val builder: AlertDialog.Builder = activity.let {
         AlertDialog.Builder(it)
