@@ -26,6 +26,7 @@ class UpdateManager(private var activity: Activity,
      *   <update>
      *       <version>2222</version>
      *       <sver>0.2.25</version>
+     *       <description>%s</description>
      *       <name>name</name>
      *       <url>http://192.168.3.102/android.apk</url>
      *   </update>
@@ -102,7 +103,7 @@ class UpdateManager(private var activity: Activity,
 
             alertDialog = show2ChoisesDialog(activity,
                 activity.resources.getString(R.string.update_title),
-                activity.resources.getString(R.string.update_message, ver.getString("localver"),ver.getString("remotever") ),
+                activity.resources.getString(R.string.update_message, ver.getString("localver"),ver.getString("remotever"), ver.getString("description")),
                 activity.resources.getString(R.string.update_update_btn),
                 activity.resources.getString(R.string.no),
                 {   // ok

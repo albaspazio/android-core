@@ -23,7 +23,7 @@
 
     <string name="update_latest">Sei in possesso dell\' ultima versione</string>
     <string name="update_title">Nuovo aggiornamento</string>
-    <string name="update_message">E\' disponibile una nuova versione\nVuoi aggiornare l\'app?\n%1$s => %2$s</string>
+    <string name="update_message">E\' disponibile una nuova versione\nVuoi aggiornare PsySuite?\n%1$s => %2$s\n\nNovità introdotte:\n\n%3$s</string>
     <string name="update_update_btn">Aggiorna</string>
     <string name="updating">Aggiornamento</string>
     <string name="update_cancel">Annulla</string>

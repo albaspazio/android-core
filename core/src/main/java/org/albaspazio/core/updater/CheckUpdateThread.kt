@@ -39,6 +39,7 @@ class CheckUpdateThread(
             val b = Bundle()
             b.putInt("localcode", localver.first)
             b.putString("localver", localver.second)
+            b.putString("description", update.description)
 
             b.putInt("remotecode", update.version)
             b.putString("remotever", update.sver)

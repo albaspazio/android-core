@@ -29,15 +29,7 @@ fun saveText(ctx: Context, filename: String, text: String, dir:String= Environme
 
         if (notifyDm) {
             val down = ctx.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            down.addCompletedDownload(
-                file.name,
-                "User file",
-                false,
-                "text/plain",
-                file.path,
-                file.length(),
-                true
-            )
+            down.addCompletedDownload(file.name, "User file", false, "text/plain", file.path, file.length(), true)
         }
         return true
     }
