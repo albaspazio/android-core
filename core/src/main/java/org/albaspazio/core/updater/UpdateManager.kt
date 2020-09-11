@@ -3,7 +3,9 @@ package org.albaspazio.core.updater
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -32,6 +34,9 @@ class UpdateManager(private var activity: Activity,
      *   </update>
      */
 
+    var appCurrentCode:Int                              = getVersionCodeLocal(activity).first
+    var appRemoteCode:Int                               = -1
+
     private val TAG                                     = "UpdateManager"
 
     private var packageName: String                     = activity.packageName
@@ -50,9 +55,7 @@ class UpdateManager(private var activity: Activity,
         Constants.REMOTE_FILE_NOT_FOUND to activity.resources.getString(R.string.remotefile_notfound_error),
         Constants.TIMEOUT_ERROR         to activity.resources.getString(R.string.timeout_error),
         Constants.UNKNOWN_ERROR         to activity.resources.getString(R.string.unknown_error),
-        Constants.NETWORK_ABSENT         to activity.resources.getString(R.string.network_absent))
-
-
+        Constants.NETWORK_ABSENT        to activity.resources.getString(R.string.network_absent))
 
     private val mHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -77,6 +80,18 @@ class UpdateManager(private var activity: Activity,
         }
     }
 
+    companion object{
+        fun getVersionCodeLocal(context: Context): Pair<Int, String> {
+            return try  {
+                Pair(context.packageManager.getPackageInfo(context.packageName, 0).versionCode,
+                    context.packageManager.getPackageInfo(context.packageName, 0).versionName)
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+                Pair(0, "")
+            }
+        }
+    }
+
     // called by activity => VERSION_COMPARE_END => onCompareEnd :  upgrade or skip => downloadApk()
     fun checkUpdate() {
 
@@ -86,7 +101,7 @@ class UpdateManager(private var activity: Activity,
         }
 
         Log.d(TAG, "checkUpdate..")
-        checkUpdateThread = CheckUpdateThread(activity, mHandler, packageName, updateXmlUrl, timeOutMs, options)
+        checkUpdateThread = CheckUpdateThread(activity, mHandler, updateXmlUrl, timeOutMs, options)
 
         GlobalScope.launch {
             (checkUpdateThread as CheckUpdateThread).run()
@@ -98,7 +113,9 @@ class UpdateManager(private var activity: Activity,
     // from handleMessage
     private fun onCompareEnd(ver:Bundle) {
 
-        if (ver.getInt("localcode") < ver.getInt("remotecode")) {
+        appRemoteCode   = ver.getInt("remotecode")
+
+        if (appCurrentCode < appRemoteCode) {
             Log.d(TAG, activity.resources.getString(R.string.update_title))
 
             alertDialog = show2ChoisesDialog(activity,

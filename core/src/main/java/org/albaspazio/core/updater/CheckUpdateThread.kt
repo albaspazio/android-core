@@ -14,7 +14,6 @@ import java.net.SocketTimeoutException
 class CheckUpdateThread(
     private val mContext: Context,
     private val mHandler: Handler,
-    private val packageName: String,
     private val updateXmlUrl: String,
     private val timeOutMs: Int,
     options: JSONObject?
@@ -24,10 +23,9 @@ class CheckUpdateThread(
     private val TAG     = "CheckUpdateThread"
     private val authentication: AuthenticationOptions = AuthenticationOptions(options)
 
-
     override fun run() {
 
-        val localver = getVersionCodeLocal(mContext)
+        val localver = UpdateManager.getVersionCodeLocal(mContext)
         update = Update(updateXmlUrl, localver.first, authentication)
 
         try {
@@ -63,15 +61,5 @@ class CheckUpdateThread(
             e.printStackTrace()
             mHandler.sendEmptyMessage(Constants.NETWORK_ERROR)
         }
-    }
-
-    private fun getVersionCodeLocal(context: Context): Pair<Int, String> {
-        return try  {
-                        Pair(context.packageManager.getPackageInfo(packageName, 0).versionCode,
-                             context.packageManager.getPackageInfo(packageName, 0).versionName)
-                    } catch (e: PackageManager.NameNotFoundException) {
-                        e.printStackTrace()
-                        Pair(0, "")
-                    }
     }
 }
