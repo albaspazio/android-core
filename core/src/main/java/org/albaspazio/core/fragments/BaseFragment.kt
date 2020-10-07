@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import io.reactivex.disposables.CompositeDisposable
 
 //--------------------------------------------------------------------------------------------------
 // abstract layer containing behaviour common to all fragments:
@@ -22,6 +23,8 @@ abstract class BaseFragment(
 ) : Fragment() {
 
     open val LOG_TAG = BaseFragment::class.java.simpleName
+
+    protected val disposable = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -42,5 +45,10 @@ abstract class BaseFragment(
         super.onResume()
 
         (activity as iNavigated).refreshNavigationVisibility()
+    }
+
+    override fun onPause(){
+        super.onPause()
+        disposable.clear()
     }
 }
