@@ -1,5 +1,6 @@
 package org.albaspazio.core.fragments
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.reactivex.disposables.CompositeDisposable
+
 
 //--------------------------------------------------------------------------------------------------
 // abstract layer containing behaviour common to all fragments:
@@ -34,7 +37,6 @@ abstract class BaseFragment(
 
     override fun onStart() {
         super.onStart()
-
         if (landscape != (requireActivity().requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)) {
             requireActivity().requestedOrientation = if (landscape) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             return
@@ -43,8 +45,8 @@ abstract class BaseFragment(
 
     override fun onResume() {
         super.onResume()
-
-        (activity as iNavigated).refreshNavigationVisibility()
+        val intent = Intent("NAVIGATION_UPDATE")
+        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
     }
 
     override fun onPause(){
