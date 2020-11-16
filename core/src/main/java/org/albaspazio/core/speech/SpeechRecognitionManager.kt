@@ -21,7 +21,7 @@ import java.util.*
 class SpeechRecognitionManager(private val ctx: Context) {
 
     private var speechRecognizer: SpeechRecognizer  = SpeechRecognizer.createSpeechRecognizer(ctx)
-    private val speechRelay                         = PublishRelay.create<Optional<Pair<Int, String?>>>()
+    private val speechRelay= PublishRelay.create<Optional<Pair<Int, String?>>>()
 
     private var isRecognizing:Boolean = false
 

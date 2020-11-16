@@ -14,7 +14,8 @@ import java.util.*
 class SpeechManager(
     private val resources: Resources,
     applicationContext: Context,
-    private var pause: Int = PAUSE
+    private var pause: Int = PAUSE,
+    clb: (Boolean) -> Unit = {}
 ) {
 
     companion object {
@@ -30,65 +31,74 @@ class SpeechManager(
     private var isSpeaking: Boolean = false
     private var mSpeakHandler: Handler = Handler()
 
-    var callback: (Unit) -> Unit = {}
+    private var callback: (Unit) -> Unit = {}
 
     // init tts, load Language & set progress listener
     init {
-        tts = TextToSpeech(applicationContext, TextToSpeech.OnInitListener { status ->
-            if (status == TextToSpeech.SUCCESS) {
+        try {
+            tts = TextToSpeech(applicationContext) { status ->
+                if (status == TextToSpeech.SUCCESS) {
 
-                val result = tts!!.setLanguage(Locale.ITALIAN)
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Log.e("TTS", resources.getString(R.string.warn_tts_language_notsupported))
-                }
-                isValid = true
-
-                tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-
-                    override fun onStart(utterance_id: String?) {
-                        //Log.d("TTS","START TTS")
-                        isSpeaking = true
+                    val result = tts!!.setLanguage(Locale.ITALIAN)
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", resources.getString(R.string.warn_tts_language_notsupported))
                     }
+                    isValid = true
 
-                    override fun onStop(utterance_id: String?, interrupted: Boolean) {
-                        super.onStop(utterance_id, interrupted)
-                        //Log.d("TTS","STOP")
-                        isSpeaking = false
-                    }
+                    tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
 
-                    override fun onDone(utterance_id: String?) {
-                        isSpeaking = false
-                        //Log.d("TTS","DONE")
+                        override fun onStart(utterance_id: String?) {
+                            //Log.d("TTS","START TTS")
+                            isSpeaking = true
+                        }
 
-                        if (textList.size > 0)
-                            when (utterance_id) {
-                                utterance_text -> {
-                                    if (textList.size > 0) tts?.playSilentUtterance(
-                                        pause.toLong(),
-                                        TextToSpeech.QUEUE_ADD,
-                                        utterance_silence
-                                    )
+                        override fun onStop(utterance_id: String?, interrupted: Boolean) {
+                            super.onStop(utterance_id, interrupted)
+                            //Log.d("TTS","STOP")
+                            isSpeaking = false
+                        }
+
+                        override fun onDone(utterance_id: String?) {
+                            isSpeaking = false
+                            //Log.d("TTS","DONE")
+
+                            if (textList.size > 0)
+                                when (utterance_id) {
+                                    utterance_text -> {
+                                        if (textList.size > 0) tts?.playSilentUtterance(
+                                            pause.toLong(),
+                                            TextToSpeech.QUEUE_ADD,
+                                            utterance_silence
+                                        )
+                                    }
+                                    utterance_silence -> doSpeak()
                                 }
-                                utterance_silence -> doSpeak()
-                            }
-                        else {
-                            if (callback != {}) {
-                                callback(Unit)
-                                callback = {}
+                            else {
+                                if (callback != {}) {
+                                    callback(Unit)
+                                    callback = {}
+                                }
                             }
                         }
-                    }
 
-                    override fun onError(utterance_id: String?) {
-                        Log.d("TTS", "ERROR")
-                    }
-                })
-            } else {
-                Log.e("TTS", resources.getString(R.string.error_tts_notinitialized))
-                tts = null
-                isValid = false
+                        override fun onError(utterance_id: String?) {
+                            Log.d("TTS", "ERROR")
+                        }
+                    })
+                } else {
+                    Log.e("TTS", resources.getString(R.string.error_tts_notinitialized))
+                    tts = null
+                    isValid = false
+                }
+                clb(isValid)
             }
-        })
+        }
+        catch(e:Exception){
+            Log.e("TTS", resources.getString(R.string.error_tts_notinitialized))
+            tts = null
+            isValid = false
+            clb(isValid)
+        }
     }
 
     // does the work !
@@ -107,10 +117,10 @@ class SpeechManager(
         queue_mode: Int = TextToSpeech.QUEUE_ADD,
         params: Bundle? = null,
         utterance_id: String = utterance_text,
-        clb: (Unit) -> Unit = {},
-        delay: Long = 0
+        delay: Long = 0,
+        clb: (Unit) -> Unit = {}
     ) {
-        speak(listOf(text), queue_mode, params, utterance_id, pause, clb, delay)
+        speak(listOf(text), queue_mode, params, utterance_id, pause, delay, clb)
     }
 
     fun speak(
@@ -119,8 +129,8 @@ class SpeechManager(
         params: Bundle? = null,
         utterance_id: String = utterance_text,
         pause: Int = PAUSE,
-        clb: (Unit) -> Unit = {},
-        delay: Long = 0
+        delay: Long = 0,
+        clb: (Unit) -> Unit = {}
     ) {
         callback = clb
         this.pause = pause
@@ -136,10 +146,10 @@ class SpeechManager(
         queue_mode: Int = TextToSpeech.QUEUE_ADD,
         params: Bundle? = null,
         utterance_id: String = utterance_text,
-        clb: (Unit) -> Unit = {},
-        delay: Long = 0
+        delay: Long = 0,
+        clb: (Unit) -> Unit = {}
     ) {
-        stopAndSpeak(listOf(text), queue_mode, params, utterance_id, pause, clb, delay)
+        stopAndSpeak(listOf(text), queue_mode, params, utterance_id, pause, delay, clb)
     }
 
     fun stopAndSpeak(
@@ -148,13 +158,13 @@ class SpeechManager(
         params: Bundle? = null,
         utterance_id: String = utterance_text,
         pause: Int = PAUSE,
-        clb: (Unit) -> Unit = {},
-        delay: Long = 0
+        delay: Long = 0,
+        clb: (Unit) -> Unit = {}
     ) {
         stop()  // also set isSpeaking=false
         textList.clear()
         isSpeaking = false
-        speak(text, queue_mode, params, utterance_id, pause, clb, delay)
+        speak(text, queue_mode, params, utterance_id, pause, delay, clb)
     }
 
     fun stop() {
