@@ -1,6 +1,7 @@
 package org.albaspazio.core.speech
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.speech.tts.TextToSpeech
@@ -10,12 +11,13 @@ import org.albaspazio.core.R
 import java.util.*
 
 
-class SpeechManager(ctx: Context,
-                   private var pause: Int = PAUSE,
-                   private var clb: () -> Unit = {}
-) {
+class SpeechManager_test(params:Triple<Context,Int,()->Unit>){
 
-    private val resources = ctx.resources
+    private val ctx: Context            = params.first
+    private var pause: Int              = if(params.second != -1)   params.second else PAUSE
+    private var callback: () -> Unit    = if(params.third != {})    params.third else { {} }
+
+    private val resources: Resources    = ctx.resources
 
     companion object {
         private const val PAUSE: Int = 500
@@ -30,7 +32,6 @@ class SpeechManager(ctx: Context,
     private var isSpeaking: Boolean             = false
     private var mSpeakHandler: Handler          = Handler()
 
-//    private var callback: (Unit) -> Unit = {}
 
     // init tts, load Language & set progress listener
     init {
@@ -73,9 +74,9 @@ class SpeechManager(ctx: Context,
                                     utterance_silence -> doSpeak()
                                 }
                             else {
-                                if (clb != {}) {
-                                    clb()
-                                    clb = {}
+                                if (callback != {}) {
+                                    callback()
+                                    callback = {}
                                 }
                             }
                         }
@@ -86,27 +87,27 @@ class SpeechManager(ctx: Context,
                     })
                 } else {
                     Log.e("TTS", resources.getString(R.string.error_tts_notinitialized))
-                    tts     = null
+                    tts = null
                     isValid = false
                 }
-                clb()
-                clb = {}
+                callback()
+                callback = {}
             }
         }
         catch(e:Exception){
             Log.e("TTS", resources.getString(R.string.error_tts_notinitialized))
-            tts     = null
+            tts = null
             isValid = false
-            clb()
-            clb     = {}
+            callback()
+            callback = {}
         }
     }
 
     // does the work !
     private fun doSpeak(
-        queue_mode: Int         = TextToSpeech.QUEUE_ADD,
-        params: Bundle?         = null,
-        utterance_id: String    = utterance_text
+        queue_mode: Int = TextToSpeech.QUEUE_ADD,
+        params: Bundle? = null,
+        utterance_id: String = utterance_text
     ) {
         val text = textList.removeAt(0)
         Log.i("TTS", "--------------->: $text")
@@ -115,25 +116,25 @@ class SpeechManager(ctx: Context,
 
     fun speak(
         text: String,
-        queue_mode: Int         = TextToSpeech.QUEUE_ADD,
-        params: Bundle?         = null,
-        utterance_id: String    = utterance_text,
-        delay: Long             = 0,
-        clb: () -> Unit         = {}
+        queue_mode: Int = TextToSpeech.QUEUE_ADD,
+        params: Bundle? = null,
+        utterance_id: String = utterance_text,
+        delay: Long = 0,
+        clb: () -> Unit = {}
     ) {
         speak(listOf(text), queue_mode, params, utterance_id, pause, delay, clb)
     }
 
     fun speak(
         text: List<String>,
-        queue_mode: Int         = TextToSpeech.QUEUE_ADD,
-        params: Bundle?         = null,
-        utterance_id: String    = utterance_text,
-        pause: Int              = PAUSE,
-        delay: Long             = 0,
-        clb: () -> Unit         = {}
+        queue_mode: Int = TextToSpeech.QUEUE_ADD,
+        params: Bundle? = null,
+        utterance_id: String = utterance_text,
+        pause: Int = PAUSE,
+        delay: Long = 0,
+        clb: () -> Unit = {}
     ) {
-        this.clb = clb
+        callback = clb
         this.pause = pause
         textList.addAll(text)
         if (!isSpeaking) {
@@ -144,23 +145,23 @@ class SpeechManager(ctx: Context,
 
     fun stopAndSpeak(
         text: String,
-        queue_mode: Int         = TextToSpeech.QUEUE_ADD,
-        params: Bundle?         = null,
-        utterance_id: String    = utterance_text,
-        delay: Long             = 0,
-        clb: () -> Unit         = {}
+        queue_mode: Int = TextToSpeech.QUEUE_ADD,
+        params: Bundle? = null,
+        utterance_id: String = utterance_text,
+        delay: Long = 0,
+        clb: () -> Unit = {}
     ) {
         stopAndSpeak(listOf(text), queue_mode, params, utterance_id, pause, delay, clb)
     }
 
     fun stopAndSpeak(
         text: List<String>,
-        queue_mode: Int         = TextToSpeech.QUEUE_ADD,
-        params: Bundle?         = null,
-        utterance_id: String    = utterance_text,
-        pause: Int              = PAUSE,
-        delay: Long             = 0,
-        clb: () -> Unit         = {}
+        queue_mode: Int = TextToSpeech.QUEUE_ADD,
+        params: Bundle? = null,
+        utterance_id: String = utterance_text,
+        pause: Int = PAUSE,
+        delay: Long = 0,
+        clb: () -> Unit = {}
     ) {
         stop()  // also set isSpeaking=false
         textList.clear()

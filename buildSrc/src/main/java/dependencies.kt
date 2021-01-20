@@ -10,12 +10,12 @@ object Configs {
 
 object Versions {
 
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.10"
     const val ktx = "1.4.0-alpha01"
-    const val gradlePlugin = "4.0.0"
-    const val navVersion = "2.3.0-rc01"
+    const val gradlePlugin = "4.1.1"
+    const val navVersion = "2.3.0"
     const val navSafeArgsGradlePlugin = "1.0.0"
-    const val moshi = "1.9.2"
+    const val moshi = "1.11.0"
 }
 
 object Dependencies {

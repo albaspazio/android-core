@@ -1,3 +1,4 @@
+
 plugins {
     id(Plugins.androidLibrary)
     kotlin(Plugins.kotlinAndroid)
@@ -44,7 +45,7 @@ dependencies {
     api(Dependencies.Kotlin.reflect)
 
     api("androidx.appcompat:appcompat:1.3.0-alpha02")
-    api("androidx.constraintlayout:constraintlayout:2.0.2")
+    api("androidx.constraintlayout:constraintlayout:2.0.4")
     api("com.google.android.material:material:1.2.1")
 
     api("io.reactivex.rxjava2:rxandroid:2.1.1")
@@ -55,7 +56,12 @@ dependencies {
     api("com.sun.mail:android-activation:1.6.5")
     implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.0.0")
 
-    testImplementation("junit:junit:4.13")
+//    api("com.github.barteksc:android-pdf-viewer:2.8.2")
+
+    api("androidx.datastore:datastore-preferences:1.0.0-alpha05")
+
+
+        testImplementation("junit:junit:4.13")
     androidTestImplementation("androidx.test:runner:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 }
