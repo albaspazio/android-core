@@ -31,3 +31,19 @@ fun getFullDateString(format:String = "it"):String{
 
     return   getDateString(format) + "_" + h + mi + s
 }
+
+fun getOnsetDate():String{
+
+    val c = Calendar.getInstance()
+
+    val min = if(c.get(Calendar.MINUTE) > 9)         c.get(Calendar.MINUTE).toString()
+            else                                    "0" + c.get(Calendar.MINUTE).toString()
+
+    val s = if(c.get(Calendar.SECOND) > 9)          c.get(Calendar.SECOND).toString()
+            else                                    "0" + c.get(Calendar.SECOND).toString()
+
+    val ms = if(c.get(Calendar.MILLISECOND) > 9)    c.get(Calendar.MILLISECOND).toString()
+            else                                    "0" + c.get(Calendar.MILLISECOND).toString()
+
+    return "$min:$s:$ms"
+}

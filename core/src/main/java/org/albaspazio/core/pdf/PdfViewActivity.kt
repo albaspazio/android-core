@@ -9,18 +9,34 @@ import org.albaspazio.core.R
 class PdfViewActivity: AppCompatActivity() {
 
     var error_message:String = ""
-    
+    val FRAGMENT_PDF_RENDERER_BASIC = "pdf_renderer_basic"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pdf_view)
+//        setContentView(R.layout.activity_pdf_view)
+//        setContentView(R.layout.fragment_pdf_renderer)
+        setContentView(R.layout.activity_pdf_viewer)
 
-        val pdfManual = intent.getStringExtra("pdfAssetName")
-        error_message = intent.getStringExtra("error_message") ?: "Errore generico"
+        val pdfFile = intent.getStringExtra("pdfAssetName")
+        val title = intent.getStringExtra("title")
+        error_message = intent.getStringExtra("error_message") ?: "Generic Error"
         
-        if(pdfManual == null || pdfManual.isEmpty())
-            Toast.makeText(this@PdfViewActivity, error_message, Toast.LENGTH_LONG).show()
-        else
-            showPdfFromAssets(pdfManual)
+        if(pdfFile == null || pdfFile.isEmpty())
+            Toast.makeText(this@PdfViewActivity, "$error_message displaying $pdfFile", Toast.LENGTH_LONG).show()
+        else {
+
+            val bundle = Bundle()
+            bundle.putString("pdf_file", pdfFile)
+            bundle.putString("title", title)
+            val fragobj = PdfRendererBasicFragment()
+            fragobj.setArguments(bundle)
+
+            supportFragmentManager.beginTransaction()
+                .add(R.id.container, fragobj, FRAGMENT_PDF_RENDERER_BASIC)
+                .commit()
+
+            // showPdfFromAssets(pdfManual)
+        }
     }
 
     private fun showPdfFromAssets(pdfName: String) {
