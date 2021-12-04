@@ -104,7 +104,7 @@ class Mail() : javax.mail.Authenticator() {
     }
 
     @Throws(Exception::class)
-    fun addAttachment(filename: String?) {
+    fun addAttachment(filename: String) {
         val messageBodyPart: BodyPart           = MimeBodyPart()
         val source: javax.activation.DataSource = FileDataSource(filename)
         messageBodyPart.dataHandler             = DataHandler(source)

@@ -1,5 +1,6 @@
 <resources>
 
+    <string name="tts_try_init">Inizializzazione Test-to-Speech</string>
     <string name="warn_tts_language_notsupported">lingua non supportata dal servizio di text-to-speech</string>
     <string name="error_tts_notinitialized">il servizio di text-to-speech non si é inizializzato</string>
 
@@ -12,5 +13,47 @@
     <string name="char_recognition_busy_error">riconoscitore occupato</string>
     <string name="char_recognition_generic_error">errore generico </string>
     <string name="char_recognition_missing_permission">mancano i permessi per registrare l\'audio</string>
+
+    <string name="titleEnableIme">Enable K4B keyboard</string>
+    <string name="summaryEnableIme">The keyboard allows blind users you to dictate into any text field in any app using a Talkback-like or speech recognition modalities. Tap here to enable it in the Android virtual keyboard settings.</string>
+
+
+    <!--    UPDATER-->
+
+    <string name="no">no</string>
+
+    <string name="update_latest">Sei in possesso dell\' ultima versione</string>
+    <string name="update_title">Nuovo aggiornamento</string>
+    <string name="update_message">E\' disponibile una nuova versione\nVuoi aggiornare PsySuite?\n%1$s => %2$s\n\nNovità introdotte:\n\n%3$s</string>
+    <string name="update_update_btn">Aggiorna</string>
+    <string name="updating">Aggiornamento</string>
+    <string name="update_cancel">Annulla</string>
+    <string name="update_bg">Aggiorna in background</string>
+    <string name="downloading">Sto scaricando la nuova versione</string>
+    <string name="download_complete">Download completato con successo</string>
+    <string name="download_complete_title">Download completato</string>
+    <string name="download_complete_pos_btn">Scarica di nuovo</string>
+    <string name="download_complete_neu_btn">Installa</string>
+
+    <string name="network_absent">Nessun accesso alla rete</string>
+
+    <string name="network_error">Errore di Network</string>
+    <string name="connection_error">Errore di connessione</string>
+    <string name="remotefile_notfound_error">File remoto non trovata</string>
+    <string name="timeout_error">Il server non ha risposto in tempo</string>
+    <string name="unknown_error">Errore di rete sconosciuto</string>
+    <string name="parse_error">Errore di lettura del file di versione</string>
+
+    <string name="update_error_title">Errore</string>
+    <string name="update_error_message">Si è verificato un errore durante l\'aggiornamento:\n%1$s</string>
+    <string name="update_error_yes_btn">OK</string>
+
+    <string name="next">prossimo</string>
+    <string name="previous">precedente</string>
+
+    <!--     PDF-->
+    <string name="pdf_title_with_index">%1$s (%2$d/%3$d)</string>
+    <string name="pdf_error_message">%1$s    ( error displaying %2$s)</string>
+
 
 </resources>

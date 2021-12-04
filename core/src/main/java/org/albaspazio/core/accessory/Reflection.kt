@@ -12,5 +12,10 @@ fun getCompanionObjectMethod(clsname:String, meth:String): Pair<KFunction<*>?, A
 
     val co = kClass.companionObject
     val coi = kClass.companionObjectInstance
-    return Pair(co?.functions?.first { it.name.equals(meth) }, coi)
+
+    var kf:KFunction<*>? = null
+    co?.functions?.map{
+        if(it.name == meth) kf = it
+    }
+    return Pair(kf, coi)
 }
