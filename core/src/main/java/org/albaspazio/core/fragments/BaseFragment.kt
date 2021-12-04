@@ -28,11 +28,13 @@ abstract class BaseFragment(
     open val LOG_TAG = BaseFragment::class.java.simpleName
 
     protected val disposable = CompositeDisposable()
+    protected lateinit var mMainView:View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(layout, container, false)
+        mMainView = inflater.inflate(layout, container, false)
+        return mMainView
     }
 
     override fun onStart() {

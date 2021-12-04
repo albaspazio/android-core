@@ -12,7 +12,7 @@ import java.util.*
 
 class SpeechManager(ctx: Context,
                    private var pause: Int = PAUSE,
-                   private var clb: () -> Unit = {}
+                   private var clb: (() -> Unit)? = null
 ) {
 
     private val resources = ctx.resources
@@ -35,6 +35,7 @@ class SpeechManager(ctx: Context,
     // init tts, load Language & set progress listener
     init {
         try {
+            Log.d("TTS", resources.getString(R.string.tts_try_init))
             tts = TextToSpeech(ctx) { status ->
                 if (status == TextToSpeech.SUCCESS) {
 
@@ -73,9 +74,9 @@ class SpeechManager(ctx: Context,
                                     utterance_silence -> doSpeak()
                                 }
                             else {
-                                if (clb != {}) {
-                                    clb()
-                                    clb = {}
+                                if (clb != null) {
+                                    clb?.invoke()
+                                    clb = null
                                 }
                             }
                         }
@@ -89,16 +90,16 @@ class SpeechManager(ctx: Context,
                     tts     = null
                     isValid = false
                 }
-                clb()
-                clb = {}
+                clb?.invoke()   // used in TestFragment
+                clb = null
             }
         }
         catch(e:Exception){
             Log.e("TTS", resources.getString(R.string.error_tts_notinitialized))
             tts     = null
             isValid = false
-            clb()
-            clb     = {}
+            clb?.invoke()
+            clb     = null
         }
     }
 
@@ -119,11 +120,12 @@ class SpeechManager(ctx: Context,
         params: Bundle?         = null,
         utterance_id: String    = utterance_text,
         delay: Long             = 0,
-        clb: () -> Unit         = {}
+        clb: (() -> Unit)?      = null
     ) {
         speak(listOf(text), queue_mode, params, utterance_id, pause, delay, clb)
     }
 
+    // super primitive method, the only one that sets clb and call doSpeak (but for onDone)
     fun speak(
         text: List<String>,
         queue_mode: Int         = TextToSpeech.QUEUE_ADD,
@@ -131,9 +133,13 @@ class SpeechManager(ctx: Context,
         utterance_id: String    = utterance_text,
         pause: Int              = PAUSE,
         delay: Long             = 0,
-        clb: () -> Unit         = {}
+        clb: (() -> Unit)?      = null
     ) {
-        this.clb = clb
+        if(clb != null)
+//            this.clb = {}
+//        else
+            this.clb = clb
+
         this.pause = pause
         textList.addAll(text)
         if (!isSpeaking) {
@@ -148,7 +154,7 @@ class SpeechManager(ctx: Context,
         params: Bundle?         = null,
         utterance_id: String    = utterance_text,
         delay: Long             = 0,
-        clb: () -> Unit         = {}
+        clb: (() -> Unit)?      = null
     ) {
         stopAndSpeak(listOf(text), queue_mode, params, utterance_id, pause, delay, clb)
     }
@@ -160,12 +166,16 @@ class SpeechManager(ctx: Context,
         utterance_id: String    = utterance_text,
         pause: Int              = PAUSE,
         delay: Long             = 0,
-        clb: () -> Unit         = {}
+        clb: (() -> Unit)?      = null
     ) {
         stop()  // also set isSpeaking=false
         textList.clear()
         isSpeaking = false
         speak(text, queue_mode, params, utterance_id, pause, delay, clb)
+    }
+
+    fun clearClb(){
+        clb = null
     }
 
     fun stop() {

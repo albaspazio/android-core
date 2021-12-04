@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import org.albaspazio.core.R
+import org.albaspazio.core.ui.showToast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -24,12 +25,13 @@ import java.io.IOException
  */
 class PdfRendererBasicFragment : Fragment(), View.OnClickListener {
 
-    private var FILENAME = "sample.pdf"
-    private var TITLE = "TITLE"
+    private var FILENAME    = "sample.pdf"
+    private var TITLE       = "TITLE"
+    private var ERROR_MSG   = "Error"
 
     // Key string for saving the state of current page index.
     private val STATE_CURRENT_PAGE_INDEX = "current_page_index"
-    private val TAG = "PdfRendererBasicFragment"
+    private val TAG = "PdfRendererBasicFrg"
 
     //The initial page index of the PDF.
     private val INITIAL_PAGE_INDEX = 0
@@ -57,12 +59,12 @@ class PdfRendererBasicFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-    arguments?.let {
-        FILENAME    = it.getString("pdf_file").toString()
-        TITLE       = it.getString("title").toString()
-    }
-
-      return inflater.inflate(R.layout.fragment_pdf_renderer, container, false)
+        arguments?.let {
+            FILENAME    = it.getString("pdf_file").toString()
+            TITLE       = it.getString("title").toString()
+            ERROR_MSG   = it.getString("error_message").toString()
+        }
+        return inflater.inflate(R.layout.fragment_pdf_renderer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,6 +84,8 @@ class PdfRendererBasicFragment : Fragment(), View.OnClickListener {
             openRenderer(activity)
             showPage(pageIndex)
         } catch (e: IOException) {
+            showToast(resources.getString(R.string.pdf_error_message, ERROR_MSG, FILENAME), requireContext())
+            requireActivity().finish()
             Log.d(TAG, e.toString())
         }
     }
@@ -137,9 +141,11 @@ class PdfRendererBasicFragment : Fragment(), View.OnClickListener {
    */
     @Throws(IOException::class)
     private fun closeRenderer() {
-        currentPage.close()
-        pdfRenderer.close()
-        fileDescriptor.close()
+      if(this::pdfRenderer.isInitialized) {
+          currentPage.close()
+          pdfRenderer.close()
+          fileDescriptor.close()
+      }
     }
 
   /**

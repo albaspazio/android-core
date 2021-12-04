@@ -64,6 +64,12 @@ class VibrationManager(private val ctx: Context) {
         val effect = VibrationEffect.createOneShot(duration, ampl)
         vibrator!!.vibrate(effect)
     }
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private fun vibrateSingle29(duration:Long, ampl:Int = VibrationEffect.DEFAULT_AMPLITUDE) {
+        // val effect = VibrationEffect.createOneShot(duration, ampl)
+        val effect = VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK) // VibrationEffect.createOneShot(duration, ampl)
+        vibrator!!.vibrate(effect)
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun vibratePattern26(timings: LongArray, amplitudes: IntArray, rep: Int = -1) {

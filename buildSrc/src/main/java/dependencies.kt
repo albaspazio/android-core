@@ -1,21 +1,21 @@
 object Configs {
 
     const val applicationId     = "iit.uvip.psysuite"
-    const val compileSdkVersion = 29
-    const val minSdkVersion     = 23
+    const val compileSdkVersion = 31
+    const val minSdkVersion     = 24
     const val targetSdkVersion  = 26
     const val versionCode       = 1
-    const val versionName       = "1.0.0"
+    const val versionName       = "1.1.0"
 }
 
 object Versions {
 
-    const val kotlin = "1.4.10"
-    const val ktx = "1.4.0-alpha01"
+    const val kotlin = "1.5.31"
+    const val ktx = "1.7.0"
     const val gradlePlugin = "4.1.1"
-    const val navVersion = "2.3.0"
+    const val navVersion = "2.3.5"
     const val navSafeArgsGradlePlugin = "1.0.0"
-    const val moshi = "1.11.0"
+    const val moshi = "1.12.0"
 }
 
 object Dependencies {

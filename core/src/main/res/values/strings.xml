@@ -1,5 +1,6 @@
 <resources>
 
+    <string name="tts_try_init">Inizializzazione Test-to-Speech</string>
     <string name="warn_tts_language_notsupported">lingua non supportata dal servizio di text-to-speech</string>
     <string name="error_tts_notinitialized">il servizio di text-to-speech non si é inizializzato</string>
 
@@ -50,8 +51,9 @@
     <string name="next">prossimo</string>
     <string name="previous">precedente</string>
 
-
+    <!--     PDF-->
     <string name="pdf_title_with_index">%1$s (%2$d/%3$d)</string>
+    <string name="pdf_error_message">%1$s    ( error displaying %2$s)</string>
 
 
 </resources>
