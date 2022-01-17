@@ -1,6 +1,11 @@
 package org.albaspazio.core.accessory
 
+import android.content.Context
+import android.graphics.Rect
 import android.util.Log
+import android.util.TypedValue
+import android.view.MotionEvent
+import android.view.View
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -20,6 +25,12 @@ fun Exception.logLastTwo(LOG_TAG:String){
     Log.e(LOG_TAG, "${this.stackTrace[0].fileName} at line: ${this.stackTrace[0].lineNumber}")
     Log.e(LOG_TAG, "${this.stackTrace[1].fileName} at line: ${this.stackTrace[1].lineNumber}")
 }
+
+// Extension method to convert pixels to dp
+fun Int.toDp(context: Context):Int = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,this.toFloat(),context.resources.displayMetrics
+).toInt()
+
 
 // found in https://medium.com/@BladeCoder/kotlin-singletons-with-argument-194ef06edd9e
 open class SingletonHolder<out T: Any, in A>(creator: (A) -> T) {
@@ -59,4 +70,11 @@ open class SingletonHolder<out T: Any, in A>(creator: (A) -> T) {
 //            }
 //        }
     }
+}
+
+val MotionEvent.up get() = action == MotionEvent.ACTION_UP
+
+fun MotionEvent.isIn(view: View): Boolean {
+    val rect = Rect(view.left, view.top, view.right, view.bottom)
+    return rect.contains((view.left + x).toInt(), (view.top + y).toInt())
 }
