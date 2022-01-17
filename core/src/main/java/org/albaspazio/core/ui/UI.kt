@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.view.Gravity
+import android.view.View
+import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.Toast
 
@@ -65,4 +67,10 @@ fun show2ChoisesDialog(activity: Activity, title:String, message:String, oklab:S
 
 fun RadioGroup.getSelectedID():Int{
     return indexOfChild(findViewById(checkedRadioButtonId))
+}
+
+fun ImageView.loadDrawableFromName(name:String, ctx: Context, visible:Int=View.VISIBLE){
+    val resId = ctx.resources.getIdentifier(name, "drawable", ctx.packageName)
+    this.setImageResource(resId)
+    this.visibility = visible
 }

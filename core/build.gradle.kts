@@ -25,8 +25,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
 }
@@ -45,7 +45,7 @@ dependencies {
     api(Dependencies.Kotlin.reflect)
 
     api("androidx.appcompat:appcompat:1.3.1")
-    api("androidx.constraintlayout:constraintlayout:2.1.1")
+    api("androidx.constraintlayout:constraintlayout:2.1.2")
     api("com.google.android.material:material:1.4.0")
 
     api("io.reactivex.rxjava2:rxandroid:2.1.1")
