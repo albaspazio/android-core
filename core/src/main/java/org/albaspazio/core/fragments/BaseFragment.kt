@@ -1,7 +1,6 @@
 package org.albaspazio.core.fragments
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,10 +38,11 @@ abstract class BaseFragment(
 
     override fun onStart() {
         super.onStart()
-        if (landscape != (requireActivity().requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)) {
-            requireActivity().requestedOrientation = if (landscape) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            return
-        }
+
+//        if (landscape != (requireActivity().requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)) {
+//            requireActivity().requestedOrientation = if (landscape) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//            return
+//        }
     }
 
     override fun onResume() {

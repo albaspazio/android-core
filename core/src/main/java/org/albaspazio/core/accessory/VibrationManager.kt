@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -13,16 +14,33 @@ class VibrationManager(private val ctx: Context) {
 
     private var vibrator: Vibrator? = null
 
-    fun init(): VibrationManager? {
-        vibrator = ctx.getSystemService(AppCompatActivity.VIBRATOR_SERVICE) as Vibrator?
+    companion object{
 
-        return when (vibrator != null) {
-            true -> {
-                if (vibrator!!.hasVibrator()) this
-                else null
+        fun getVibrator(ctx:Context):Vibrator?{
+            val vib =   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            val vibratorManager = ctx.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager?
+                            vibratorManager?.defaultVibrator
+                        } else {
+                            @Suppress("DEPRECATION")
+                            ctx.getSystemService(AppCompatActivity.VIBRATOR_SERVICE) as Vibrator?
+                        }
+            return when(vib?.hasVibrator()){
+                true -> vib
+                else -> null
             }
-            false -> null
         }
+
+        fun sysHasVibrator(ctx:Context):Boolean{
+            return getVibrator(ctx) != null
+        }
+    }
+
+    fun init(): VibrationManager? {
+
+        vibrator = getVibrator(ctx)
+
+        return  if(vibrator != null)    this
+                else                    null
     }
 
     fun vibrateSingle(duration: Long, ampl: Int = -1) {   // ampl -1 corresponds to VibrationEffect.DEFAULT_AMPLITUDE
