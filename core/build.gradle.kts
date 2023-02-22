@@ -54,6 +54,8 @@ dependencies {
 
     //api("androidx.datastore:datastore-preferences:1.0.0")
 
+    api("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test:runner:1.4.0")
