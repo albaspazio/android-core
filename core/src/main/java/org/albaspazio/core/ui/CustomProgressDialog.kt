@@ -12,11 +12,13 @@ import android.os.Build
 import android.view.View
 import android.widget.ProgressBar
 import androidx.core.content.res.ResourcesCompat
-import kotlinx.android.synthetic.main.progress_dialog_view.*
-import kotlinx.android.synthetic.main.progress_dialog_view.view.*
+
 import org.albaspazio.core.R
+import org.albaspazio.core.databinding.ProgressDialogViewBinding
 
 class CustomProgressDialog(private val context: Context) {
+
+    private lateinit var binding: ProgressDialogViewBinding
 
     lateinit var dialog: CustomDialog
 
@@ -27,30 +29,32 @@ class CustomProgressDialog(private val context: Context) {
     }
 
     fun show(title: CharSequence?, oklabel: CharSequence?, cancellabel: CharSequence?, cancelclk: View.OnClickListener?): Dialog {
-        val inflater = (context as Activity).layoutInflater
-        val view = inflater.inflate(R.layout.progress_dialog_view, null)
-        if (title != null)          view.cp_title.text = title
 
+        val inflater = (context as Activity).layoutInflater
+        binding = ProgressDialogViewBinding.inflate(inflater)
+
+        if (title != null)          binding.cpTitle.text = title
 
         // Card Color
-        view.cp_cardview.setCardBackgroundColor(Color.parseColor("#70000000"))
+        binding.cpCardview.setCardBackgroundColor(Color.parseColor("#70000000"))
 
         // Progress Bar Color
-        setColorFilter(view.cp_pbar.indeterminateDrawable, ResourcesCompat.getColor(context.resources, R.color.colorPrimary, null))
-        progressBar = view.cp_pbar
+        setColorFilter(binding.cpPbar.indeterminateDrawable, ResourcesCompat.getColor(context.resources, R.color.colorPrimary, null))
+        progressBar = binding.cpPbar
+
         // Text Color
-        view.cp_title.setTextColor(Color.WHITE)
+        binding.cpTitle.setTextColor(Color.WHITE)
 
         dialog = CustomDialog(context)
-        dialog.setContentView(view)
+        dialog.setContentView(binding.root)
 
-        dialog.btLeft.visibility = View.GONE
+        binding.btLeft.visibility = View.GONE
 //        dialog.btRight.visibility = View.GONE
 
-        if (oklabel != null)        dialog.btLeft.text  = oklabel
-        if (cancellabel != null)    dialog.btRight.text = cancellabel
+        if (oklabel != null)        binding.btLeft.text  = oklabel
+        if (cancellabel != null)    binding.btRight.text = cancellabel
 
-        dialog.btRight.setOnClickListener(cancelclk)
+        binding.btRight.setOnClickListener(cancelclk)
 
         dialog.show()
         return dialog
@@ -62,16 +66,16 @@ class CustomProgressDialog(private val context: Context) {
 
     fun updateProgress(prg:Int){
         progressBar.progress = prg
-        dialog.labProgress.text = "$prg %"
+        binding.labProgress.text = "$prg %"
     }
 
     fun onDownloadFinished(clklist: View.OnClickListener){
 
-        dialog.btLeft.visibility    = View.VISIBLE //Install Manually
-        dialog.btRight.visibility   = View.VISIBLE //Download Again
-        dialog.cp_title.text        = context.resources.getString(R.string.download_complete_title)
+        binding.btLeft.visibility    = View.VISIBLE //Install Manually
+        binding.btRight.visibility   = View.VISIBLE //Download Again
+        binding.cpTitle.text        = context.resources.getString(R.string.download_complete_title)
 
-        dialog.btLeft.setOnClickListener(clklist)
+        binding.btLeft.setOnClickListener(clklist)
     }
 
     private fun setColorFilter(drawable: Drawable, color: Int) {

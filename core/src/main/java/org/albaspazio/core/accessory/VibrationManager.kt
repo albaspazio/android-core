@@ -65,6 +65,13 @@ class VibrationManager(private val ctx: Context) {
             vibrator!!.vibrate(timings, rep)
     }
 
+    fun vibratePattern(pattern: VibrationEffect) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            vibratePattern26(pattern)
+        else
+            return
+    }
+
     fun vibratePattern(timings_amplitudes: LongArray, rep: Int = -1) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             vibratePattern26(timings_amplitudes, rep)
@@ -93,6 +100,10 @@ class VibrationManager(private val ctx: Context) {
     private fun vibratePattern26(timings: LongArray, amplitudes: IntArray, rep: Int = -1) {
         val effect = VibrationEffect.createWaveform(timings, amplitudes, rep)
         vibrator!!.vibrate(effect)
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private fun vibratePattern26(pattern: VibrationEffect) {
+        vibrator!!.vibrate(pattern)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
