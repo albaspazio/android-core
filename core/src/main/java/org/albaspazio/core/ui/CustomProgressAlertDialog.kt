@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 
-
 import org.albaspazio.core.R
 import org.albaspazio.core.databinding.ProgressDialogAlertdialogBinding
 

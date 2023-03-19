@@ -21,6 +21,7 @@
     <!--    UPDATER-->
 
     <string name="no">no</string>
+    <string name="error">error</string>
 
     <string name="update_latest">Sei in possesso dell\' ultima versione</string>
     <string name="update_title">Nuovo aggiornamento</string>
