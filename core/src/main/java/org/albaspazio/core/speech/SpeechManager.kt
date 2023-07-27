@@ -48,32 +48,22 @@ class SpeechManager(ctx: Context,
                     tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
 
                         override fun onStart(utterance_id: String?) {
-                            //Log.d("TTS","START TTS")
-                            isSpeaking = true
+                            isSpeaking = true       //Log.d("TTS","START TTS")
                         }
 
                         override fun onStop(utterance_id: String?, interrupted: Boolean) {
                             super.onStop(utterance_id, interrupted)
-                            //Log.d("TTS","STOP")
-                            isSpeaking = false
+                            isSpeaking = false      //Log.d("TTS","STOP")
                         }
 
                         override fun onDone(utterance_id: String?) {
-                            isSpeaking = false
-                            //Log.d("TTS","DONE")
-
+                            isSpeaking = false      //Log.d("TTS","DONE")
                             if (textList.size > 0)
-                                when (utterance_id) {
-                                    utterance_text -> {
-                                        if (textList.size > 0) tts?.playSilentUtterance(
-                                            pause.toLong(),
-                                            TextToSpeech.QUEUE_ADD,
-                                            utterance_silence
-                                        )
-                                    }
-                                    utterance_silence -> doSpeak()
+                                when(utterance_id){
+                                    utterance_text      -> tts?.playSilentUtterance(pause.toLong(), TextToSpeech.QUEUE_ADD, utterance_silence)
+                                    utterance_silence   -> doSpeak()
                                 }
-                            else {
+                            else{
                                 if (clb != null) {
                                     clb?.invoke()
                                     clb = null
@@ -125,7 +115,7 @@ class SpeechManager(ctx: Context,
         speak(listOf(text), queue_mode, params, utterance_id, pause, delay, clb)
     }
 
-    // super primitive method, the only one that sets clb and call doSpeak (but for onDone)
+    // THE super primitive method, the only one that sets clb and call doSpeak (but for onDone)
     fun speak(
         text: List<String>,
         queue_mode: Int         = TextToSpeech.QUEUE_ADD,
