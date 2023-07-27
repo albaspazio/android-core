@@ -9,7 +9,6 @@ android {
     compileSdkVersion(Configs.compileSdkVersion)
     defaultConfig {
 
-//        namespace = Configs.corenamespace
         minSdkVersion(Configs.minSdkVersion)
         targetSdkVersion(Configs.targetSdkVersion)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -48,15 +47,12 @@ dependencies {
     implementation(Dependencies.AndroidX.livecyclecommon)
     implementation(Dependencies.AndroidX.localbroadcastmanager)
 
+    api(Dependencies.rx.rxandroid)
+    api(Dependencies.rx.rxrelay)
+    api(Dependencies.rx.rxkotlin)
 
-    api("io.reactivex.rxjava2:rxandroid:2.1.1")
-    api("com.jakewharton.rxrelay2:rxrelay:2.1.1")
-    api("io.reactivex.rxjava2:rxkotlin:2.4.0")
-
-    api("com.sun.mail:android-mail:1.6.7")
-    api("com.sun.mail:android-activation:1.6.7")
-
-    //api("androidx.datastore:datastore-preferences:1.0.0")
+    api(Dependencies.sunmail.mail)
+    api(Dependencies.sunmail.activation)
 
     testImplementation(Dependencies.junit)
     androidTestImplementation(Dependencies.AndroidX.testRunner)
