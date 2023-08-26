@@ -20,11 +20,11 @@ class MyGestureDetector constructor(
     private val dblTapInterval:Long = 2000   // mechanism to prevent a LP event short after a DT. don't know why it happens
                                             // I thus set a silent period of dblTapInterval ms before enabling a LP after a DT
 
-    override fun onDown(e: MotionEvent?): Boolean {
+    override fun onDown(e: MotionEvent): Boolean {
         return true
     }
 
-    override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+    override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
         if (e1 == null || e2 == null) return false
         val dX = e2.x - e1.x
         val dY = e1.y - e2.y
@@ -44,7 +44,7 @@ class MyGestureDetector constructor(
         return super.onFling(e1, e2, velocityX, velocityY)
     }
 
-    override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+    override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
         val text = "ST"
         Log.d("MyGestureDetector", "onSingleTapConfirmed: $text")
         usageMonitor?.addGesture(text)
@@ -52,7 +52,7 @@ class MyGestureDetector constructor(
         return super.onSingleTapConfirmed(e)
     }
 
-    override fun onDoubleTap(e: MotionEvent?): Boolean {
+    override fun onDoubleTap(e: MotionEvent): Boolean {
 
         val text = "DT"
         dblTapTime = Date().time
@@ -62,13 +62,13 @@ class MyGestureDetector constructor(
         return super.onDoubleTap(e)
     }
 
-    override fun onSingleTapUp(event: MotionEvent?): Boolean {
+    override fun onSingleTapUp(event: MotionEvent): Boolean {
         return true
     }
 
     // ISSUE: after a double tap, a LongPress is triggered. can't prevent it.
     // thus I block it if it happens within 1000 ms.
-    override fun onLongPress(e: MotionEvent?) {
+    override fun onLongPress(e: MotionEvent) {
         val text = "LP"
         val elapsed = Date().time - dblTapTime
 

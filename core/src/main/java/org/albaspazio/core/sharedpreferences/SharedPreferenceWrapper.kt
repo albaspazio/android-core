@@ -6,9 +6,9 @@ abstract class SharedPreferenceWrapper {
 
     protected lateinit var prefs: SharedPreferences
 
-    fun isInitialized() = ::prefs.isInitialized
+    val isInitialized get() = ::prefs.isInitialized
 
-    open fun read(key: String, defvalue: Any): Any? {
+    protected open fun read(key: String, defvalue: Any): Any? {
         return when(defvalue){
             is String   -> prefs.getString(key, defvalue)
             is Int      -> prefs.getInt(key, defvalue)
@@ -24,7 +24,7 @@ abstract class SharedPreferenceWrapper {
         }
     }
 
-    open fun write(key: String, value: Any):Any? {
+    protected open fun write(key: String, value: Any):Any? {
         val prefsEditor: SharedPreferences.Editor = prefs.edit()
         with(prefsEditor) {
             when(value){

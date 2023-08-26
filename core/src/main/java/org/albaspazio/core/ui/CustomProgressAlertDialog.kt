@@ -6,12 +6,13 @@ import android.content.DialogInterface
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.progress_dialog_view.*
-import kotlinx.android.synthetic.main.progress_dialog_view.view.*
 
 import org.albaspazio.core.R
+import org.albaspazio.core.databinding.ProgressDialogAlertdialogBinding
 
 class CustomProgressAlertDialog(private val activity: Activity) {
+
+    private lateinit var binding: ProgressDialogAlertdialogBinding
 
     private lateinit var dialog: AlertDialog
     private lateinit var progressBar:ProgressBar
@@ -19,14 +20,14 @@ class CustomProgressAlertDialog(private val activity: Activity) {
     fun show(title: CharSequence?, oklabel: CharSequence?, cancellabel: CharSequence?, okclk: DialogInterface.OnClickListener?, cancelclk: DialogInterface.OnClickListener?): Dialog {
 
         val inflater    = activity.layoutInflater
-        val view        = inflater.inflate(R.layout.progress_dialog_alertdialog, null)
-        progressBar     = view.cp_pbar
+        binding = ProgressDialogAlertdialogBinding.inflate(inflater)
+        progressBar     = binding.cpPbar
 
         val builder: AlertDialog.Builder = activity.let {
             AlertDialog.Builder(it)
         }
         builder.setTitle(title)
-            .setView(view)
+            .setView(binding.root)
             .setCancelable(false)
             .setPositiveButton(oklabel, okclk)
             .setNegativeButton(cancellabel, cancelclk)
@@ -44,7 +45,7 @@ class CustomProgressAlertDialog(private val activity: Activity) {
 
     fun updateProgress(prg:Int){
         progressBar.progress = prg
-        dialog.labProgress.text = "$prg %"
+        binding.labProgress.text = "$prg %"
     }
 
     fun onDownloadFinished(clklist: View.OnClickListener){

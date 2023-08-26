@@ -3,7 +3,6 @@ package org.albaspazio.core.pdf
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_pdf_view.*
 import org.albaspazio.core.R
 
 class PdfViewActivity: AppCompatActivity() {

@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Build.VERSION
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 // to be called with  val device:Device = Device().setRam(requireContext())
 
