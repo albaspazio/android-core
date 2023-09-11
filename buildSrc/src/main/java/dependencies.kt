@@ -27,6 +27,9 @@ object Versions {
     const val localbroadcastmanager = "1.1.0"
     const val navFragment = "2.3.5"
     const val moshi = "1.12.0"
+    const val rxkotlin = "2.4.0"
+    const val rxandroid = "2.1.1"
+    const val sunmail = "1.6.7"
 
     const val junit = "4.13.2"
     const val testRunner = "1.5.2"
@@ -60,6 +63,17 @@ object Dependencies {
     object Moshi {
         const val moshi = "com.squareup.moshi:moshi:${Versions.moshi}"
         const val moshiKt = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
+    }
+
+    object rx {
+        const val rxandroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}"
+        const val rxrelay   = "com.jakewharton.rxrelay2:rxrelay:${Versions.rxandroid}"
+        const val rxkotlin  = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
+    }
+
+    object sunmail {
+        const val mail          = "com.sun.mail:android-mail:${Versions.sunmail}"
+        const val activation    = "com.sun.mail:android-activation:${Versions.sunmail}"
     }
 
     const val junit             = "junit:junit:${Versions.junit}"

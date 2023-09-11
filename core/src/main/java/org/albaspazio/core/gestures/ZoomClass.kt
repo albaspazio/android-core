@@ -1,3 +1,12 @@
+/* =================================================================================================
+Part of android-core module
+
+https://github.com/albaspazio/android-core
+
+Author: Alberto Inuggi
+Copyright (©) 2019-2023
+==================================================================================================*/
+
 package org.albaspazio.core.gestures
 
 import android.content.Context
