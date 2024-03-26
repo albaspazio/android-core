@@ -17,6 +17,7 @@ import android.view.MotionEvent
 import android.view.View
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.*
 
 fun makeJSON(code: Int, msg: Any?): JSONObject? {
     val json = JSONObject()
@@ -87,3 +88,5 @@ fun MotionEvent.isIn(view: View): Boolean {
     val rect = Rect(view.left, view.top, view.right, view.bottom)
     return rect.contains((view.left + x).toInt(), (view.top + y).toInt())
 }
+
+fun Double.round(decimals: Int = 2): Double = "%.${decimals}f".format(locale= Locale.ENGLISH, this).toDouble()

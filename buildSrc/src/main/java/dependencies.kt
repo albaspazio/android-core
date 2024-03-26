@@ -2,7 +2,7 @@ object Configs {
 
     const val corenamespace     = "org.albaspazio.core"
 
-    const val compileSdkVersion = 31
+    const val compileSdkVersion = 32
     const val minSdkVersion     = 24
     const val targetSdkVersion  = 26
 }
