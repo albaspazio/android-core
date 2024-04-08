@@ -206,7 +206,7 @@ class ZoomClass : AppCompatImageView, View.OnTouchListener,
 
 
     @Suppress("NOTHING_TO_OVERRIDE", "ACCIDENTAL_OVERRIDE")
-    override fun onScroll(motionEvent: MotionEvent, motionEvent1: MotionEvent, v: Float, v1: Float): Boolean {
+    override fun onScroll(motionEvent: MotionEvent?, motionEvent1: MotionEvent, v: Float, v1: Float): Boolean {
         return false
     }
 
@@ -214,7 +214,7 @@ class ZoomClass : AppCompatImageView, View.OnTouchListener,
 
 
     @Suppress("NOTHING_TO_OVERRIDE", "ACCIDENTAL_OVERRIDE")
-    override fun onFling(motionEvent: MotionEvent, motionEvent1: MotionEvent, v: Float, v1: Float): Boolean {
+    override fun onFling(motionEvent: MotionEvent?, motionEvent1: MotionEvent, v: Float, v1: Float): Boolean {
         return false
     }
 
