@@ -23,7 +23,7 @@ object Versions {
     const val kparcelablePlugin = "1.7.0"
     const val constraintLayout = "2.1.4"
     const val material = "1.6.1"
-    const val lifecycle = "2.6.2"
+    const val lifecycle = "2.5.1"
     const val localbroadcastmanager = "1.1.0"
     const val navFragment = "2.3.5"
     const val moshi = "1.12.0"
@@ -40,6 +40,7 @@ object Versions {
 object Dependencies {
 
     object AndroidX {
+        const val livecycleviewmodel= "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
         const val navFragment       = "androidx.navigation:navigation-fragment-ktx:${Versions.navFragment}"
         const val navUi             = "androidx.navigation:navigation-ui-ktx:${Versions.navFragment}"
         const val ktxCore           = "androidx.core:core-ktx:${Versions.ktxCore}"

@@ -6,6 +6,8 @@ plugins {
 
 android {
 
+    sourceSets["main"].java.srcDirs("libs")
+
     compileSdkVersion(Configs.compileSdkVersion)
     defaultConfig {
 
@@ -31,9 +33,24 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+//    packagingOptions {
+//        resources {
+//            pickFirsts.add("META-INF/NOTICE.md")
+//            pickFirsts.add("META-INF/LICENSE.md")
+//        }
+//    }
+//    packagingOptions {
+//        exclude("META-INF/NOTICE*")
+//        exclude("META-INF/LICENSE*")
+//    }
 }
 
 dependencies {
+
+    implementation(Dependencies.AndroidX.livecycleviewmodel) {
+        exclude(group = "androidx.lifecycle", module ="lifecycle-viewmodel")
+    }
 
     api(Dependencies.AndroidX.ktxCore)
     api(Dependencies.AndroidX.navFragment)
@@ -54,8 +71,13 @@ dependencies {
     api(Dependencies.rx.rxrelay)
     api(Dependencies.rx.rxkotlin)
 
-    api(Dependencies.sunmail.mail)
-    api(Dependencies.sunmail.activation)
+//    api(Dependencies.sunmail.mail)
+//    api(Dependencies.sunmail.activation)
+
+    api(files("libs/activation.jar"))
+    api(files("libs/additionnal.jar"))
+    api(files("libs/mail.jar"))
+
 
     testImplementation(Dependencies.junit)
     androidTestImplementation(Dependencies.AndroidX.testRunner)
