@@ -2,7 +2,7 @@ object Configs {
 
     const val corenamespace     = "org.albaspazio.core"
 
-    const val compileSdkVersion = 32
+    const val compileSdkVersion = 34
     const val minSdkVersion     = 24
     const val targetSdkVersion  = 26
 }
@@ -23,7 +23,7 @@ object Versions {
     const val kparcelablePlugin = "1.7.0"
     const val constraintLayout = "2.1.4"
     const val material = "1.6.1"
-    const val lifecycle = "2.5.1"
+    const val lifecycle = "2.6.2"
     const val localbroadcastmanager = "1.1.0"
     const val navFragment = "2.3.5"
     const val moshi = "1.12.0"

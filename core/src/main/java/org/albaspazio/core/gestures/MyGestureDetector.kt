@@ -10,7 +10,6 @@ Copyright (©) 2019-2023
 package org.albaspazio.core.gestures
 
 
-//import android.util.Log
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
