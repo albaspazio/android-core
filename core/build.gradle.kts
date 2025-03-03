@@ -6,7 +6,7 @@ plugins {
 
 android {
 
-    sourceSets["main"].java.srcDirs("libs")
+//    sourceSets["main"].java.srcDirs("libs")
 
     compileSdkVersion(Configs.compileSdkVersion)
     defaultConfig {
