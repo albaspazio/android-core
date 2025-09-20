@@ -24,7 +24,7 @@ import javax.mail.internet.MimeMultipart
 
 // The code should run from AsynchTask or dedicated Thread
 
-class Mail() : javax.mail.Authenticator() {
+class Mail() : Authenticator() {
 
     // EMailAccount
     private var port:String     = "465"
