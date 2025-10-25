@@ -69,6 +69,13 @@ class UpdateManager(private var activity: Activity,
     private val mHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
+            
+            // Check if activity is still valid before showing UI
+            if (activity.isFinishing || activity.isDestroyed) {
+                Log.w(TAG, "Activity is finishing/destroyed, skipping UI update")
+                return
+            }
+            
             when (msg.what) {
                 Constants.VERSION_COMPARE_END   ->  onCompareEnd(msg.data)
 
@@ -127,36 +134,72 @@ class UpdateManager(private var activity: Activity,
         if (appCurrentCode < appRemoteCode) {
             Log.d(TAG, activity.resources.getString(R.string.update_title))
 
-            alertDialog = show2ChoisesDialog(activity,
-                activity.resources.getString(R.string.update_title),
-                activity.resources.getString(R.string.update_message, ver.getString("localver"),ver.getString("remotever"), ver.getString("description")),
-                activity.resources.getString(R.string.update_update_btn),
-                activity.resources.getString(R.string.no),
-                {   // ok
-                    alertDialog.dismiss()
-                    mHandler.sendEmptyMessage(Constants.DOWNLOAD_CLICK_START)
-                },                
-                {   // cancel
-                    alertDialog.dismiss()
-                    mHandler.sendEmptyMessage(Constants.UPDATE_CANCELLED)
-                })
+            // Enhanced activity validation
+            if (!isActivityValid()) {
+                Log.w(TAG, "Activity is not valid for showing dialogs")
+                onError("Activity context is no longer valid")
+                return
+            }
+
+            // Use a post to ensure we're on the main thread and activity is still valid
+            activity.runOnUiThread {
+                try {
+                    alertDialog = show2ChoisesDialog(activity,
+                        activity.resources.getString(R.string.update_title),
+                        activity.resources.getString(R.string.update_message, ver.getString("localver"),ver.getString("remotever"), ver.getString("description")),
+                        activity.resources.getString(R.string.update_update_btn),
+                        activity.resources.getString(R.string.no),
+                        {   // ok
+                            if (::alertDialog.isInitialized && alertDialog.isShowing) {
+                                alertDialog.dismiss()
+                            }
+                            mHandler.sendEmptyMessage(Constants.DOWNLOAD_CLICK_START)
+                        },                
+                        {   // cancel
+                            if (::alertDialog.isInitialized && alertDialog.isShowing) {
+                                alertDialog.dismiss()
+                            }
+                            mHandler.sendEmptyMessage(Constants.UPDATE_CANCELLED)
+                        })
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error showing update dialog", e)
+                    onError("Unable to show update dialog: ${e.message}")
+                }
+            }
         }
         else mHandler.sendEmptyMessage(Constants.VERSION_UP_TO_UPDATE)
+    }
+
+    private fun isActivityValid(): Boolean {
+        return !activity.isFinishing && !activity.isDestroyed && !activity.isChangingConfigurations
     }
 
     // onCompareEnd -> USER CLICK
     private fun downloadApk() {
         Log.d(TAG, "downloadApk")
 
-        progressDialog.show(activity.resources.getString(R.string.downloading),
-                            activity.resources.getString(R.string.download_complete_neu_btn),
-                            activity.resources.getString(R.string.update_cancel),
-                            null,
-                            downloadCancelOnClick)
+        if (!isActivityValid()) {
+            Log.w(TAG, "Activity is not valid for showing progress dialog")
+            onError("Activity context is no longer valid")
+            return
+        }
 
-        downloadApkThread = DownloadApkThread(activity, mHandler, progressDialog, checkUpdateThread!!.update)
-        GlobalScope.launch {
-            (downloadApkThread as DownloadApkThread).run()
+        activity.runOnUiThread {
+            try {
+                progressDialog.show(activity.resources.getString(R.string.downloading),
+                                    activity.resources.getString(R.string.download_complete_neu_btn),
+                                    activity.resources.getString(R.string.update_cancel),
+                                    null,
+                                    downloadCancelOnClick)
+
+                downloadApkThread = DownloadApkThread(activity, mHandler, progressDialog, checkUpdateThread!!.update)
+                GlobalScope.launch {
+                    (downloadApkThread as DownloadApkThread).run()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error showing progress dialog", e)
+                onError("Unable to show progress dialog: ${e.message}")
+            }
         }
     }
 

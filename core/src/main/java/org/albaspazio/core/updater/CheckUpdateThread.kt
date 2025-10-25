@@ -54,19 +54,26 @@ class CheckUpdateThread(
             mHandler.sendMessage(msg)
 
         } catch (e: SocketTimeoutException) {
-            e.printStackTrace()
+            android.util.Log.e(TAG, "Timeout error: ${e.message}", e)
             mHandler.sendEmptyMessage(Constants.TIMEOUT_ERROR)
         } catch (e: FileNotFoundException) {
-            e.printStackTrace()
+            android.util.Log.e(TAG, "File not found: ${e.message}", e)
             mHandler.sendEmptyMessage(Constants.REMOTE_FILE_NOT_FOUND)
         } catch (e: ConnectException) {
-            e.printStackTrace()
+            android.util.Log.e(TAG, "Connection error: ${e.message}", e)
             mHandler.sendEmptyMessage(Constants.CONNECTION_ERROR)
         } catch (e: IOException) {
-            e.printStackTrace()
+            android.util.Log.e(TAG, "Network/IO error: ${e.message}", e)
+            // Check if it's a 407 Proxy Authentication error
+            if (e.message?.contains("407") == true) {
+                android.util.Log.e(TAG, "HTTP 407 Proxy Authentication Required - check network proxy settings")
+            }
             mHandler.sendEmptyMessage(Constants.NETWORK_ERROR)
         } catch (e: ParseException) {
-            e.printStackTrace()
+            android.util.Log.e(TAG, "Parse error: ${e.message}", e)
+            mHandler.sendEmptyMessage(Constants.VERSION_PARSE_FAIL)
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Unexpected error: ${e.message}", e)
             mHandler.sendEmptyMessage(Constants.NETWORK_ERROR)
         }
     }

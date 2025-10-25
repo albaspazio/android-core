@@ -13,6 +13,7 @@ package org.albaspazio.core.updater
 import org.w3c.dom.Element
 import org.w3c.dom.Text
 import org.xml.sax.InputSource
+import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import javax.xml.parsers.DocumentBuilderFactory
@@ -28,18 +29,36 @@ data class Update(val xmlurl: String, val localversion:Int, val authenticationOp
     fun readXml(timeOutMs: Int){
 
         val url = URL(xmlurl)
-        val isrc =  if(authenticationOptions.hasCredentials()) {
-                        val conn = url.openConnection() as HttpURLConnection
-                        conn.setRequestProperty("Authorization", authenticationOptions.encodedAuthorization)
-
-                        conn.connectTimeout = timeOutMs
-                        conn.doInput        = true
-                        conn.connect()
-                        conn.inputStream as InputSource
-                    }
-                    else    InputSource(url.openStream())
-
-        parseXml(isrc)
+        val conn = url.openConnection() as HttpURLConnection
+        
+        // Set timeouts
+        conn.connectTimeout = timeOutMs
+        conn.readTimeout = timeOutMs
+        conn.doInput = true
+        
+        // Set authentication if provided
+        if(authenticationOptions.hasCredentials()) {
+            conn.setRequestProperty("Authorization", authenticationOptions.encodedAuthorization)
+        }
+        
+        // Set user agent to avoid some server blocks
+        conn.setRequestProperty("User-Agent", "PsySuite-Android-Updater/1.0")
+        
+        try {
+            conn.connect()
+            
+            // Check response code
+            val responseCode = conn.responseCode
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw IOException("HTTP Error: $responseCode - ${conn.responseMessage}")
+            }
+            
+            val isrc = InputSource(conn.inputStream)
+            parseXml(isrc)
+            
+        } finally {
+            conn.disconnect()
+        }
     }
 
     private fun parseXml(isrc:InputSource){
