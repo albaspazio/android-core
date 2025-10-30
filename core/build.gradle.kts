@@ -67,6 +67,9 @@ dependencies {
     implementation(Dependencies.AndroidX.livecyclecommon)
     implementation(Dependencies.AndroidX.localbroadcastmanager)
 
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+
     api(Dependencies.rx.rxandroid)
     api(Dependencies.rx.rxrelay)
     api(Dependencies.rx.rxkotlin)

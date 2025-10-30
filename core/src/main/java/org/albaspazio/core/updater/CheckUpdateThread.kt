@@ -38,6 +38,7 @@ class CheckUpdateThread(
 
         try {
             update.readXml(timeOutMs)
+//            update.readXmlWithOkHttp(timeOutMs)
 
             val msg = Message()
             msg.what = Constants.VERSION_COMPARE_END
