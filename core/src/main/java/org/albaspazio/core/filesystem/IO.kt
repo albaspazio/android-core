@@ -83,44 +83,74 @@ fun saveTextBQ(ctx: Context,
 }
 
 @RequiresApi(Build.VERSION_CODES.Q)
-// filename can be a String for a new file, or an Uri to append it
+// filename can be a String or an Uri.
+// append/overwrite existing according to overwrite parameter
 fun saveTextQ(ctx: Context,
               filename: Any,
               text: String,
-              dir: String = Environment.DIRECTORY_DOWNLOADS,    // "Documents/MyApp_Data/logs/"
+              dir: String = Environment.DIRECTORY_DOWNLOADS,
               overwrite: Boolean = true,
               notifyDm: Boolean = false
-):Uri {
+): Uri {
 
     val path = Environment.getExternalStoragePublicDirectory(dir)
 
-    if(!path.exists())
+    if (!path.exists())
         createFolder(ctx, dir)
 
     val fileUri = when (filename) {
         is String -> {
-            val mime =  if(filename.endsWith("json"))   "application/json"
-            else                                  "text/plain"
+            val mime = if (filename.endsWith("json")) "application/json" else "text/plain"
 
-            val values = ContentValues()
-            values.put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-            values.put(MediaStore.MediaColumns.MIME_TYPE, mime)     //file extension, will automatically add to file
-            values.put(MediaStore.MediaColumns.RELATIVE_PATH, dir)
+            // Check if file already exists in MediaStore
+            val projection = arrayOf(MediaStore.MediaColumns._ID)
+            val selection = "${MediaStore.MediaColumns.DISPLAY_NAME} = ? AND ${MediaStore.MediaColumns.RELATIVE_PATH} = ?"
+            val selectionArgs = arrayOf(filename, "$dir/")
 
-            ctx.contentResolver.insert(MediaStore.Files.getContentUri("external"), values) ?: throw Exception("error in saveTextQ")
+            val existingUri = ctx.contentResolver.query(
+                MediaStore.Files.getContentUri("external"),
+                projection,
+                selection,
+                selectionArgs,
+                null
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val id =
+                        cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
+                    ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), id)
+                } else null
+            }
+
+            // Use existing Uri or create new one
+            existingUri ?: run {
+                val values = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, mime)
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, dir)
+                }
+                ctx.contentResolver.insert(MediaStore.Files.getContentUri("external"), values)
+                    ?: throw Exception("error in saveTextQ: insert failed")
+            }
         }
-        is Uri  -> filename
-        else    -> throw IOException("IO.saveTextQ was called with a wrong param type")
+
+        is Uri -> filename
+        else -> throw IOException("IO.saveTextQ was called with a wrong param type")
     }
 
-    val outputStream    = ctx.contentResolver.openOutputStream(fileUri, "wa") ?: throw Exception("error in saveTextQ")
+    // DECISION LOGIC FOR OVERWRITE
+    // "w"  -> Write (Overwrites existing content)
+    // "wa" -> Write Append (Adds to the end of the file)
+    val mode = if (overwrite) "w" else "wa"
 
-    outputStream.write(text.toByteArray(charset("UTF-8")))
-    outputStream.close()
+    val outputStream = ctx.contentResolver.openOutputStream(fileUri, mode)
+        ?: throw Exception("error in saveTextQ: could not open output stream")
+
+    outputStream.use { stream ->
+        stream.write(text.toByteArray(Charsets.UTF_8))
+    }
 
     return fileUri
 }
-
 
 @RequiresApi(Build.VERSION_CODES.Q)
 // filename can be a String for a new file, or an Uri to append it
