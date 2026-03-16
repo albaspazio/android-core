@@ -19,8 +19,8 @@ interface Constants {
         const val DOWNLOAD_CLICK_START = 3
 
         const val VERSION_COMPARE_END = 200   // start to compare version
-        const val VERSION_UP_TO_UPDATE = 202    // version up to date
-        const val UPDATE_CANCELLED = 204        // update cancelled
+        const val VERSION_UP_TO_UPDATE = 202  // version up to date
+        const val UPDATE_CANCELLED = 204      // update cancelled
 
         const val VERSION_PARSE_FAIL = 301    // version-xml file parse fail
 

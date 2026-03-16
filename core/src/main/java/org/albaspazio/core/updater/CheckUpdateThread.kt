@@ -59,7 +59,8 @@ class CheckUpdateThread(
             mHandler.sendEmptyMessage(Constants.TIMEOUT_ERROR)
         } catch (e: FileNotFoundException) {
             android.util.Log.e(TAG, "File not found: ${e.message}", e)
-            mHandler.sendEmptyMessage(Constants.REMOTE_FILE_NOT_FOUND)
+//            mHandler.sendEmptyMessage(Constants.REMOTE_FILE_NOT_FOUND)
+            mHandler.sendEmptyMessage(Constants.VERSION_UP_TO_UPDATE)
         } catch (e: ConnectException) {
             android.util.Log.e(TAG, "Connection error: ${e.message}", e)
             mHandler.sendEmptyMessage(Constants.CONNECTION_ERROR)
