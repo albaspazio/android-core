@@ -20,7 +20,7 @@ in the manifest of the App using this library it must be defined this
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="iit.uvip.psysuite.provider"
+            android:authorities="org.albaspazio.psysuite.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -43,7 +43,7 @@ class MailIntent {
 
         fun composeEmail(
             activity: Activity,
-            applicationID:String, // e.g. "iit.uvip.psysuite.provider" defined in the manifest of the App using this library
+            applicationID:String, // e.g. "org.albaspazio.psysuite.provider" defined in the manifest of the App using this library
             addresses: Array<String> = arrayOf(),
             subject: String = "",
             body: String = "",
