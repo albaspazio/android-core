@@ -48,7 +48,7 @@ android {
 
 dependencies {
 
-    implementation(Dependencies.AndroidX.livecycleviewmodel) {
+    implementation(Dependencies.AndroidX.lifecycleviewmodel) {
         exclude(group = "androidx.lifecycle", module ="lifecycle-viewmodel")
     }
 
@@ -64,7 +64,7 @@ dependencies {
     api(Dependencies.AndroidX.material)
 
     api(Dependencies.AndroidX.livecycledataKtx)
-    implementation(Dependencies.AndroidX.livecyclecommon)
+    implementation(Dependencies.AndroidX.lifecyclecommon)
     implementation(Dependencies.AndroidX.localbroadcastmanager)
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
