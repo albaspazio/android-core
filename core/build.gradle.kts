@@ -7,6 +7,7 @@ plugins {
 android {
 
 //    sourceSets["main"].java.srcDirs("libs")
+    namespace = Configs.corenamespace
 
     compileSdkVersion(Configs.compileSdkVersion)
     defaultConfig {
@@ -32,6 +33,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
 //    packagingOptions {
@@ -63,7 +65,7 @@ dependencies {
     api(Dependencies.AndroidX.constraintLayout)
     api(Dependencies.AndroidX.material)
 
-    api(Dependencies.AndroidX.livecycledataKtx)
+    api(Dependencies.AndroidX.lifecycledataKtx)
     implementation(Dependencies.AndroidX.lifecyclecommon)
     implementation(Dependencies.AndroidX.localbroadcastmanager)
 
