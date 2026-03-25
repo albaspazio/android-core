@@ -6,14 +6,12 @@ plugins {
 
 android {
 
-//    sourceSets["main"].java.srcDirs("libs")
     namespace = Configs.corenamespace
+    compileSdk = Configs.compileSdkVersion
 
-    compileSdkVersion(Configs.compileSdkVersion)
     defaultConfig {
-
-        minSdkVersion(Configs.minSdkVersion)
-        targetSdkVersion(Configs.targetSdkVersion)
+        minSdk = Configs.minSdkVersion
+        targetSdk = Configs.targetSdkVersion
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -35,17 +33,6 @@ android {
         viewBinding = true
         buildConfig = true
     }
-
-//    packagingOptions {
-//        resources {
-//            pickFirsts.add("META-INF/NOTICE.md")
-//            pickFirsts.add("META-INF/LICENSE.md")
-//        }
-//    }
-//    packagingOptions {
-//        exclude("META-INF/NOTICE*")
-//        exclude("META-INF/LICENSE*")
-//    }
 }
 
 dependencies {
@@ -70,7 +57,6 @@ dependencies {
     implementation(Dependencies.AndroidX.localbroadcastmanager)
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
 
     api(Dependencies.rx.rxandroid)
     api(Dependencies.rx.rxrelay)
