@@ -30,6 +30,7 @@ object Versions {
     const val rxkotlin = "2.4.0"
     const val rxandroid = "2.1.1"
     const val sunmail = "1.6.7"
+    const val okhttp = "4.12.0"
 
     const val junit = "4.13.2"
     const val testRunner = "1.5.2"
@@ -75,6 +76,10 @@ object Dependencies {
     object sunmail {
         const val mail          = "com.sun.mail:android-mail:${Versions.sunmail}"
         const val activation    = "com.sun.mail:android-activation:${Versions.sunmail}"
+    }
+
+    object network {
+        const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
     }
 
     const val junit             = "junit:junit:${Versions.junit}"

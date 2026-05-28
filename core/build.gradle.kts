@@ -56,7 +56,7 @@ dependencies {
     implementation(Dependencies.AndroidX.lifecyclecommon)
     implementation(Dependencies.AndroidX.localbroadcastmanager)
 
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation(Dependencies.network.okhttp)
 
     api(Dependencies.rx.rxandroid)
     api(Dependencies.rx.rxrelay)
