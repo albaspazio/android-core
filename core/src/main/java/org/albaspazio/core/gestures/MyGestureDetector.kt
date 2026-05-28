@@ -10,13 +10,12 @@ Copyright (©) 2019-2023
 package org.albaspazio.core.gestures
 
 
-//import android.util.Log
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import java.util.*
 
-class MyGestureDetector constructor(
+class MyGestureDetector(
     private var onGesture: (m: String) -> Unit,
     private var usageMonitor: UsageMonitor?
 ) : GestureDetector.SimpleOnGestureListener() {
@@ -33,7 +32,8 @@ class MyGestureDetector constructor(
         return true
     }
 
-    override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+    @Suppress("NOTHING_TO_OVERRIDE", "ACCIDENTAL_OVERRIDE")
+    override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
         if (e1 == null || e2 == null) return false
         val dX = e2.x - e1.x
         val dY = e1.y - e2.y

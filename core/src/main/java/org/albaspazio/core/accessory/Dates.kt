@@ -12,9 +12,9 @@ package org.albaspazio.core.accessory
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun getTimeDifference(startdate:Date):Int{
+fun getTimeDifference(startdate:Date):Long{
     val now:Long = Date().time
-    return (now - startdate.time).toInt()
+    return (now - startdate.time)
 }
 
 fun getDateString(format:String = "it"):String{

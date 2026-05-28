@@ -6,11 +6,12 @@ plugins {
 
 android {
 
-    compileSdkVersion(Configs.compileSdkVersion)
-    defaultConfig {
+    namespace = Configs.corenamespace
+    compileSdk = Configs.compileSdkVersion
 
-        minSdkVersion(Configs.minSdkVersion)
-        targetSdkVersion(Configs.targetSdkVersion)
+    defaultConfig {
+        minSdk = Configs.minSdkVersion
+        targetSdk = Configs.targetSdkVersion
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -30,10 +31,15 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
 dependencies {
+
+    implementation(Dependencies.AndroidX.lifecycleviewmodel) {
+        exclude(group = "androidx.lifecycle", module ="lifecycle-viewmodel")
+    }
 
     api(Dependencies.AndroidX.ktxCore)
     api(Dependencies.AndroidX.navFragment)
@@ -46,16 +52,23 @@ dependencies {
     api(Dependencies.AndroidX.constraintLayout)
     api(Dependencies.AndroidX.material)
 
-    api(Dependencies.AndroidX.livecycledataKtx)
-    implementation(Dependencies.AndroidX.livecyclecommon)
+    api(Dependencies.AndroidX.lifecycledataKtx)
+    implementation(Dependencies.AndroidX.lifecyclecommon)
     implementation(Dependencies.AndroidX.localbroadcastmanager)
+
+    implementation(Dependencies.network.okhttp)
 
     api(Dependencies.rx.rxandroid)
     api(Dependencies.rx.rxrelay)
     api(Dependencies.rx.rxkotlin)
 
-    api(Dependencies.sunmail.mail)
-    api(Dependencies.sunmail.activation)
+//    api(Dependencies.sunmail.mail)
+//    api(Dependencies.sunmail.activation)
+
+    api(files("libs/activation.jar"))
+    api(files("libs/additionnal.jar"))
+    api(files("libs/mail.jar"))
+
 
     testImplementation(Dependencies.junit)
     androidTestImplementation(Dependencies.AndroidX.testRunner)
