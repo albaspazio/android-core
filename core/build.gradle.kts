@@ -1,7 +1,7 @@
 plugins {
-    id(Plugins.androidLibrary)
-    id(Plugins.kotlinAndroid)
-    id("kotlin-parcelize")
+    id(libs.plugins.android.library.get().pluginId)
+    id(libs.plugins.kotlin.android.get().pluginId)
+    id(libs.plugins.kotlin.parcelize.get().pluginId)
 }
 
 android {
@@ -37,40 +37,36 @@ android {
 
 dependencies {
 
-    implementation(Dependencies.AndroidX.lifecycleviewmodel) {
+    implementation(libs.androidx.lifecycle.viewmodel) {
         exclude(group = "androidx.lifecycle", module ="lifecycle-viewmodel")
     }
 
-    api(Dependencies.AndroidX.ktxCore)
-    api(Dependencies.AndroidX.navFragment)
-    api(Dependencies.AndroidX.navUi)
-    api(Dependencies.AndroidX.appCompat)
+    api(libs.androidx.core.ktx)
+    api(libs.androidx.navigation.fragment)
+    api(libs.androidx.navigation.ui)
+    api(libs.androidx.appcompat)
 
-    api(Dependencies.Kotlin.stdLib)
-    api(Dependencies.Kotlin.reflect)
+    api(libs.kotlin.stdlib)
+    api(libs.kotlin.reflect)
 
-    api(Dependencies.AndroidX.constraintLayout)
-    api(Dependencies.AndroidX.material)
+    api(libs.androidx.constraintlayout)
+    api(libs.androidx.material)
 
-    api(Dependencies.AndroidX.lifecycledataKtx)
-    implementation(Dependencies.AndroidX.lifecyclecommon)
-    implementation(Dependencies.AndroidX.localbroadcastmanager)
+    api(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.localbroadcastmanager)
 
-    implementation(Dependencies.network.okhttp)
+    implementation(libs.okhttp)
 
-    api(Dependencies.rx.rxandroid)
-    api(Dependencies.rx.rxrelay)
-    api(Dependencies.rx.rxkotlin)
-
-//    api(Dependencies.sunmail.mail)
-//    api(Dependencies.sunmail.activation)
+    api(libs.rxandroid)
+    api(libs.rxrelay)
+    api(libs.rxkotlin)
 
     api(files("libs/activation.jar"))
     api(files("libs/additionnal.jar"))
     api(files("libs/mail.jar"))
 
-
-    testImplementation(Dependencies.junit)
-    androidTestImplementation(Dependencies.AndroidX.testRunner)
-    androidTestImplementation(Dependencies.AndroidX.testEspressoCore)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
