@@ -5,6 +5,8 @@ plugins {
     id(libs.plugins.kotlin.parcelize.get().pluginId) version libs.versions.kotlinPlugin.get() apply(false)
 }
 
+ext["javaVersion"] = libs.versions.javaVersion.get()
+
 tasks.register("clean", Delete::class){
     delete(rootProject.buildDir)
 }
