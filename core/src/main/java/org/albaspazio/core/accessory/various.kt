@@ -43,9 +43,9 @@ fun Int.toDp(context: Context):Int = TypedValue.applyDimension(
 
 
 // found in https://medium.com/@BladeCoder/kotlin-singletons-with-argument-194ef06edd9e
-open class SingletonHolder<out T: Any, in A>(creator: (A) -> T) {
+open class SingletonHolder<T: Any, in A>(creator: (A) -> T) {  // Removed 'out' to allow protected mutable instance field
     private var creator: ((A) -> T)? = creator
-    @Volatile private var instance: T? = null
+    @Volatile protected var instance: T? = null
 
     fun getInstance(arg: A): T {
 
